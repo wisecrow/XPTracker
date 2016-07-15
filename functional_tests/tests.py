@@ -19,3 +19,7 @@ class FirstTimeVisitTest(unittest.TestCase):
 
 		# and sees websites titele XP Tracker
 		self.assertIn('Projects', self.browser.title )
+
+		# and sees heading 'Projects'
+		header_text = self.browser.find_element_by_tag_name('h1').text
+		self.assertEqual(header_text, 'Projects')
