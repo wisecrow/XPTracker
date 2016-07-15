@@ -23,3 +23,12 @@ class FirstTimeVisitTest(unittest.TestCase):
 		# and sees heading 'Projects'
 		header_text = self.browser.find_element_by_tag_name('h1').text
 		self.assertEqual(header_text, 'Projects')
+
+		# he sees input field and invitation to enter projects title
+		inputbox = self.browser.find_element_by_id('id_title')
+
+		self.assertEqual(
+			inputbox.get_attribute('placeholder'),
+			'Enter a projects title'
+		)
+
