@@ -19,5 +19,6 @@ from project import views
 
 urlpatterns = [
     #url(r'^admin/', admin.site.urls),
-    url(r'^$', views.show_index, name='home')
+    url(r'^$', views.show_index, name='home'),
+	url(r'^projects/my-new-project/$', views.show_project, name='show_project')
 ]

@@ -15,8 +15,17 @@ class HomePageTest(TestCase):
 		response = show_index(request)
 		expected_html = render_to_string('home.html', {
 			'title':'Projects'
-		})
+		},
+		request=request)
 		self.assertEqual(response.content.decode(), expected_html)
+
+	def test_new_project_redirects_to_project_home(self):
+		request = HttpRequest()
+		request.method = 'POST'
+		request.POST['title'] = 'my new project'
+		response = show_index(request)
+		self.assertEqual(response.status_code, 302)
+		self.assertEqual(response['location'], '/projects/my-new-project/')
 
 
 

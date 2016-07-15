@@ -1,8 +1,10 @@
 from selenium import webdriver
 from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 import unittest
+from django.test import LiveServerTestCase
+from selenium.webdriver.common.keys import Keys
 
-class FirstTimeVisitTest(unittest.TestCase):
+class FirstTimeVisitTest(LiveServerTestCase):
 
 	def setUp(self):
 		binary = FirefoxBinary('/usr/bin/firefox')
@@ -15,7 +17,7 @@ class FirstTimeVisitTest(unittest.TestCase):
 
 	def test_can_visit_home_page(self):
 		# PM visits project website entering url address http://localhost:8000
-		self.browser.get('http://localhost:8000')
+		self.browser.get(self.live_server_url)
 
 		# and sees websites titele XP Tracker
 		self.assertIn('Projects', self.browser.title )
@@ -24,6 +26,9 @@ class FirstTimeVisitTest(unittest.TestCase):
 		header_text = self.browser.find_element_by_tag_name('h1').text
 		self.assertEqual(header_text, 'Projects')
 
+
+	def test_can_enter_project_title_and_redirect_to_projects_home(self):
+		self.browser.get(self.live_server_url)
 		# he sees input field and invitation to enter projects title
 		inputbox = self.browser.find_element_by_id('id_title')
 
@@ -31,4 +36,15 @@ class FirstTimeVisitTest(unittest.TestCase):
 			inputbox.get_attribute('placeholder'),
 			'Enter a projects title'
 		)
+
+
+		inputbox.send_keys('my new project')
+		inputbox.send_keys(Keys.ENTER)
+
+		#import time
+		#time.sleep(10)
+
+		self.assertRegex(self.browser.current_url, '/projects/.+')
+
+
 
