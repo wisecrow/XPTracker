@@ -52,9 +52,18 @@ class FirstTimeVisitTest(LiveServerTestCase):
 		inputbox = self.browser.find_element_by_id('id_title')
 		inputbox.send_keys('my other project')
 		inputbox.send_keys(Keys.ENTER)
+		self.assertRegex(self.browser.current_url, '/projects/my-other-project/$')
+
+
+	def test_empty_submited_title_does_nothing(self):
+		self.browser.get(self.live_server_url)
+		inputbox = self.browser.find_element_by_id('id_title')
+		inputbox.send_keys(' ')
+		inputbox.send_keys(Keys.ENTER)
 		#import time
 		#time.sleep(10)
-		self.assertRegex(self.browser.current_url, '/projects/my-other-project/$')
+		self.assertEqual('%s/' % self.live_server_url, self.browser.current_url)
+
 
 
 

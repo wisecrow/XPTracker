@@ -46,4 +46,11 @@ class ProjectHomePageTest(TestCase):
 			self.assertEqual(response['location'], '/projects/%s/' % ProjectHomePageTest.titles[key])
 
 
+	def test_empty_post_does_nothing(self):
+		request = HttpRequest()
+		request.method = 'POST'
+		request.POST['title'] = ' '
+		response = show_index(request)
+		self.assertContains(response, "Projects")
+
 
