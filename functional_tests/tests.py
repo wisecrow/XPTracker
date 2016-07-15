@@ -29,6 +29,7 @@ class FirstTimeVisitTest(LiveServerTestCase):
 
 	def test_can_enter_project_title_and_redirect_to_projects_home(self):
 		self.browser.get(self.live_server_url)
+		#self.browser.get('http://localhost:8000')
 		# he sees input field and invitation to enter projects title
 		inputbox = self.browser.find_element_by_id('id_title')
 
@@ -41,10 +42,19 @@ class FirstTimeVisitTest(LiveServerTestCase):
 		inputbox.send_keys('my new project')
 		inputbox.send_keys(Keys.ENTER)
 
+		self.assertRegex(self.browser.current_url, '/projects/my-new-project/$')
+
+		# he does it again
+		self.browser.get(self.live_server_url)
+		#self.browser.get('http://localhost:8000')
+
+
+		inputbox = self.browser.find_element_by_id('id_title')
+		inputbox.send_keys('my other project')
+		inputbox.send_keys(Keys.ENTER)
 		#import time
 		#time.sleep(10)
-
-		self.assertRegex(self.browser.current_url, '/projects/.+')
+		self.assertRegex(self.browser.current_url, '/projects/my-other-project/$')
 
 
 

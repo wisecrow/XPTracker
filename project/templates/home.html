@@ -6,6 +6,6 @@
     <h1>{{ title }}</h1>
 </body>
 <form method="POST">{% csrf_token %}
-    <input id="id_title" placeholder="Enter a projects title">
+    <input name="title" id="id_title" placeholder="Enter a projects title">
 </form>
 </html>
