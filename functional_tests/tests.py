@@ -5,6 +5,7 @@ from django.test import LiveServerTestCase
 from selenium.webdriver.common.keys import Keys
 
 class FirstTimeVisitTest(LiveServerTestCase):
+	# LiveServerTestCase solves test isolation problem, but tests should be lauched by Django testruner - manage.py test
 
 	def setUp(self):
 		binary = FirefoxBinary('/usr/bin/firefox')
