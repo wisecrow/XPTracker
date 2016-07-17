@@ -12,5 +12,10 @@
     <input name="identifier" id="id_identifier" placeholder="Enter a projects identifier" required>
     <input type="submit" name="submit" id="id_submit" value="Submit">
 </form>
+<table id="id_list_projects">
+    {% for project in projects %}
+    <tr><td><a href="/projects/{{project.identifier}}/" >{{project.title}}</a></td></tr>
+    {% endfor %}
+</table>
 </body>
 </html>

@@ -21,6 +21,19 @@ class HomePageTest(TestCase):
 		self.assertContains(response, 'Projects')
 
 class ProjectHomePageTest(TestCase):
+	project_fields = [
+		'title',
+		'description',
+		'release_date',
+		'identifier'
+	]
+
+	projects_fields_vals=[
+		['My new project1', 'My new project description1', '2016-08-01', 'my-new-project1'],
+		['My new project2', 'My new project description2', '2016-08-02', 'my-new-project2'],
+		['My new project3', 'My new project description3', '2016-08-03', 'my-new-project3'],
+		['My new project4', 'My new project description4', '2016-08-04', 'my-new-project4']
+	]
 # 	titles = {
 # 		'my new project': 'my-new-project',
 # 		'my other project ': 'my-other-project',
@@ -31,77 +44,79 @@ class ProjectHomePageTest(TestCase):
 # 		for key, value in ProjectHomePageTest.titles.items():
 # 			self.assertEqual(get_url_string(key), value)
 
-	def get_new_projects_request(self):
+	def get_new_projects_request(self, data):
 		request = HttpRequest()
 		request.method = 'POST'
-		request.POST['title'] = 'New project12'
-		request.POST['description'] = 'My new description'
-		request.POST['release_date'] = '2016-09-23'
-		request.POST['identifier'] = 'new-project12'
+		request.POST['title'] = data[0]
+		request.POST['description'] = data[1]
+		request.POST['release_date'] = data[2]
+		request.POST['identifier'] = data[3]
 		return request
 
 
 	def test_can_create_and_retrieve_project(self):
-		p1 = Project(
-			title='New project1',
-			description='Description1',
-			release_date='2016-08-22',
-			identifier='my-project1')
-		p1.save()
+		projects = ProjectHomePageTest.projects_fields_vals
+		for vals in ProjectHomePageTest.projects_fields_vals:
+			p = Project(
+				title = vals[0],
+				description = vals[1],
+				release_date = vals[2] ,
+				identifier = vals[3])
+			p.save()
 
-		p2 = Project(
-			title='New project2',
-			description='Description2',
-			release_date='2016-08-24',
-			identifier='my-project2')
-		p2.save()
 
-		all_projects = Project.objects.all()
-		p1=all_projects[0]
-		p2 = all_projects[1]
+		for i, p in enumerate(Project.objects.all(), 0):
+			self.assertEqual(p.title, projects[i][0])
+			self.assertEqual(p.description, projects[i][1])
+			self.assertEqual(p.release_date.strftime('%Y-%m-%d'), projects[i][2])
+			self.assertEqual(p.identifier, projects[i][3])
 
-		self.assertEqual(p1.title, 'New project1')
-		self.assertEqual(p1.description, 'Description1')
-		self.assertEqual(p1.release_date.strftime('%Y-%m-%d'), '2016-08-22')
-		self.assertEqual(p1.identifier, 'my-project1')
 
-		self.assertEqual(p2.title, 'New project2')
-		self.assertEqual(p2.description, 'Description2')
-		self.assertEqual(p2.release_date.strftime('%Y-%m-%d'), '2016-08-24')
-		self.assertEqual(p2.identifier, 'my-project2')
 
 	def test_can_create_project_from_post(self):
-
-		show_projects(self.get_new_projects_request())
+		data=ProjectHomePageTest.projects_fields_vals[0]
+		show_projects(self.get_new_projects_request(data))
 
 		self.assertEqual(Project.objects.count(), 1)
 		p1 = Project.objects.first()
-		self.assertEqual(p1.title, 'New project12')
-		self.assertEqual(p1.description, 'My new description')
-		self.assertEqual(p1.release_date.strftime('%Y-%m-%d'), '2016-09-23')
-		self.assertEqual(p1.identifier, 'new-project12')
+		self.assertEqual(p1.title, data[0])
+		self.assertEqual(p1.description, data[1])
+		self.assertEqual(p1.release_date.strftime('%Y-%m-%d'), data[2])
+		self.assertEqual(p1.identifier, data[3])
 
 
 	def test_new_project_redirects_to_project_home(self):
-		response = show_projects(self.get_new_projects_request())
+		data = ProjectHomePageTest.projects_fields_vals[0]
+		response = show_projects(self.get_new_projects_request(data))
 		self.assertEqual(response.status_code, 302)
-		self.assertEqual(response['location'], '/projects/new-project12/')
+		self.assertEqual(response['location'], '/projects/%s/' % data[3])
 
 
 	def test_can_retrieve_project_by_identifier(self):
-		show_projects(self.get_new_projects_request())
-		p1 = Project.objects.filter(identifier='new-project12')
-		self.assertEqual(p1[0].title, 'New project12')
+		data = ProjectHomePageTest.projects_fields_vals[0]
+		show_projects(self.get_new_projects_request(data))
+		p1 = Project.objects.filter(identifier=data[3])
+		self.assertEqual(p1[0].title, data[0])
 
 
 
 	def test_can_get_html_after_project_creation(self):
-		show_projects(self.get_new_projects_request())
-		response=self.client.get('/projects/new-project12/')
+		data=ProjectHomePageTest.projects_fields_vals[0]
+		show_projects(self.get_new_projects_request(data))
+		response=self.client.get('/projects/%s/' % data[3])
 		self.assertEqual(response.status_code, 200)
 		self.assertTemplateUsed(response, 'project.html')
-		self.assertContains(response, 'New project12')
+		self.assertContains(response, data[0])
 
+
+	def test_index_page_has_index_of_projects(self):
+		for data in ProjectHomePageTest.projects_fields_vals:
+			show_projects(self.get_new_projects_request(data))
+		#import pdb; pdb.set_trace()
+		response = self.client.get('/projects/')
+
+		for data in ProjectHomePageTest.projects_fields_vals:
+			self.assertContains(response, data[0])
 
 
 # 		for key, value in ProjectHomePageTest.titles.items():

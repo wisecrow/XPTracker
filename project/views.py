@@ -21,13 +21,17 @@ def show_projects(request):
 		p1.save()
 		return redirect('/projects/%s/' % identifier)
 
+	projects = Project.objects.all()
 	return render(request, 'projects.html',
-				  {'title':'Projects'})
+				  {
+					  'title':'Projects',
+					  'projects':projects
+				  })
 
 def show_project(request, id):
 	project = Project.objects.filter(identifier=id)
 	if project:
-		return render(request, 'project.html', {'title':project[0].title})
+		return render(request, 'project.html', {'project':project[0]})
 	return redirect('/projects/')
 
 
