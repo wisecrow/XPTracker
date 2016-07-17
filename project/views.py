@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from project.models import Project
 from django.http import HttpResponse
+from django.http import HttpResponseNotFound
 import re
 
 def show_index(request):
@@ -30,9 +31,9 @@ def show_projects(request):
 
 def show_project(request, id):
 	project = Project.objects.filter(identifier=id)
-	if project:
-		return render(request, 'project.html', {'project':project[0]})
-	return redirect('/projects/')
+	if not project:
+		return  HttpResponseNotFound('Page not found!')
+	return render(request, 'project.html', {'project':project[0]})
 
 
 def get_url_string(title):
