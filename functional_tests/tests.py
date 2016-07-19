@@ -23,8 +23,9 @@ class FirstTimeHomePageVisitTest(LiveServerTestCase):
 	]
 
 	def setUp(self):
-		binary = FirefoxBinary('/usr/bin/firefox')
-		self.browser = webdriver.Firefox(firefox_binary=binary)
+		#binary = FirefoxBinary('/usr/bin/firefox45')
+		#self.browser = webdriver.Firefox(firefox_binary=binary)
+		self.browser = webdriver.Firefox()
 		# self.browser.implicitly_wait(3)
 
 	def tearDown(self):

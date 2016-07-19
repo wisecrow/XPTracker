@@ -119,6 +119,7 @@ class ProjectHomePageTest(TestCase):
 			self.assertContains(response, data[0])
 
 
+
 # 		for key, value in ProjectHomePageTest.titles.items():
 # 			found = resolve('/')
 # 			request.method = 'POST'
