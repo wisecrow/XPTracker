@@ -16,10 +16,12 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from project import views
+from user_stories import views as us_views
 
 urlpatterns = [
     #url(r'^admin/', admin.site.urls),
     url(r'^$', views.show_index, name='home'),
+	url(r'^projects/(.+)/(.+)$', us_views.show_us_index, name='us_index'),
 	url(r'^projects/(.+)/$', views.show_project, name='show_project'),
 	url(r'^projects/(.+)$', views.show_project, name='show_project'),
 	url(r'^projects/', views.show_projects, name='show_projects')

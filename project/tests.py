@@ -5,7 +5,33 @@ from django.http import HttpRequest
 from django.template.loader import render_to_string
 from project.models import Project
 
-class HomePageTest(TestCase):
+
+class BaseTest(TestCase):
+	project_fields = [
+		'title',
+		'description',
+		'release_date',
+		'identifier'
+	]
+
+	projects_fields_vals = [
+		['My new project1', 'My new project description1', '2016-08-01', 'my-new-project1'],
+		['My new project2', 'My new project description2', '2016-08-02', 'my-new-project2'],
+		['My new project3', 'My new project description3', '2016-08-03', 'my-new-project3'],
+		['My new project4', 'My new project description4', '2016-08-04', 'my-new-project4']
+	]
+
+	def get_new_projects_request(self, data):
+		request = HttpRequest()
+		request.method = 'POST'
+		request.POST['title'] = data[0]
+		request.POST['description'] = data[1]
+		request.POST['release_date'] = data[2]
+		request.POST['identifier'] = data[3]
+		return request
+
+
+class HomePageTest(BaseTest):
 
 	def test_root_url_resolves_to_projects_home_page(self):
 		response = self.client.get('/')
@@ -20,20 +46,10 @@ class HomePageTest(TestCase):
 		self.assertEqual(response.status_code, 200)
 		self.assertContains(response, 'Projects')
 
-class ProjectHomePageTest(TestCase):
-	project_fields = [
-		'title',
-		'description',
-		'release_date',
-		'identifier'
-	]
 
-	projects_fields_vals=[
-		['My new project1', 'My new project description1', '2016-08-01', 'my-new-project1'],
-		['My new project2', 'My new project description2', '2016-08-02', 'my-new-project2'],
-		['My new project3', 'My new project description3', '2016-08-03', 'my-new-project3'],
-		['My new project4', 'My new project description4', '2016-08-04', 'my-new-project4']
-	]
+
+class ProjectHomePageTest(BaseTest):
+
 # 	titles = {
 # 		'my new project': 'my-new-project',
 # 		'my other project ': 'my-other-project',
@@ -44,19 +60,10 @@ class ProjectHomePageTest(TestCase):
 # 		for key, value in ProjectHomePageTest.titles.items():
 # 			self.assertEqual(get_url_string(key), value)
 
-	def get_new_projects_request(self, data):
-		request = HttpRequest()
-		request.method = 'POST'
-		request.POST['title'] = data[0]
-		request.POST['description'] = data[1]
-		request.POST['release_date'] = data[2]
-		request.POST['identifier'] = data[3]
-		return request
-
 
 	def test_can_create_and_retrieve_project(self):
-		projects = ProjectHomePageTest.projects_fields_vals
-		for vals in ProjectHomePageTest.projects_fields_vals:
+		projects = BaseTest.projects_fields_vals
+		for vals in BaseTest.projects_fields_vals:
 			p = Project(
 				title = vals[0],
 				description = vals[1],
@@ -74,7 +81,7 @@ class ProjectHomePageTest(TestCase):
 
 
 	def test_can_create_project_from_post(self):
-		data=ProjectHomePageTest.projects_fields_vals[0]
+		data=BaseTest.projects_fields_vals[0]
 		show_projects(self.get_new_projects_request(data))
 
 		self.assertEqual(Project.objects.count(), 1)
@@ -86,14 +93,14 @@ class ProjectHomePageTest(TestCase):
 
 
 	def test_new_project_redirects_to_project_home(self):
-		data = ProjectHomePageTest.projects_fields_vals[0]
+		data = BaseTest.projects_fields_vals[0]
 		response = show_projects(self.get_new_projects_request(data))
 		self.assertEqual(response.status_code, 302)
 		self.assertEqual(response['location'], '/projects/%s/' % data[3])
 
 
 	def test_can_retrieve_project_by_identifier(self):
-		data = ProjectHomePageTest.projects_fields_vals[0]
+		data = BaseTest.projects_fields_vals[0]
 		show_projects(self.get_new_projects_request(data))
 		p1 = Project.objects.filter(identifier=data[3])
 		self.assertEqual(p1[0].title, data[0])
@@ -101,7 +108,7 @@ class ProjectHomePageTest(TestCase):
 
 
 	def test_can_get_html_after_project_creation(self):
-		data=ProjectHomePageTest.projects_fields_vals[0]
+		data=BaseTest.projects_fields_vals[0]
 		show_projects(self.get_new_projects_request(data))
 		response=self.client.get('/projects/%s/' % data[3])
 		self.assertEqual(response.status_code, 200)
@@ -110,16 +117,26 @@ class ProjectHomePageTest(TestCase):
 
 
 	def test_index_page_has_index_of_projects(self):
-		for data in ProjectHomePageTest.projects_fields_vals:
+		for data in BaseTest.projects_fields_vals:
 			show_projects(self.get_new_projects_request(data))
-		#import pdb; pdb.set_trace()
 		response = self.client.get('/projects/')
 
-		for data in ProjectHomePageTest.projects_fields_vals:
+		for data in BaseTest.projects_fields_vals:
 			self.assertContains(response, data[0])
 
+class UserStoriesIndexTest(BaseTest):
+
+	def test_us_index_resolves_correctly(self):
+		for data in BaseTest.projects_fields_vals:
+			show_projects(self.get_new_projects_request(data))
+			response = self.client.get('/projects/%s/user_stories/' % data[3])
+			self.assertEqual(response.status_code, 200)
+			self.assertTemplateUsed(response, 'us_home.html')
+			self.assertContains(response, 'User Stories')
 
 
+
+#		response = self.client.get('/projects/%s/' % data[3])
 # 		for key, value in ProjectHomePageTest.titles.items():
 # 			found = resolve('/')
 # 			request.method = 'POST'
