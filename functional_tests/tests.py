@@ -93,7 +93,7 @@ class FirstTimeHomePageVisitTest(BaseTest):
 
 		self.assertEqual(
 			input_title.get_attribute('placeholder'),
-			 		'Enter a projects title'
+			 		'Projects title'
 			 	)
 
 		input_description = self.browser.find_element_by_id('id_description')
@@ -103,7 +103,7 @@ class FirstTimeHomePageVisitTest(BaseTest):
 
 		self.assertEqual(
 			input_description.get_attribute('placeholder'),
-			'Enter a projects description'
+			'Projects description'
 		)
 
 		input_release_date = self.browser.find_element_by_id('id_release_date')
@@ -112,7 +112,7 @@ class FirstTimeHomePageVisitTest(BaseTest):
 
 		self.assertEqual(
 			input_release_date.get_attribute('placeholder'),
-			'Enter a projects release date'
+			'Projects release date'
 		)
 
 		input_identifier = self.browser.find_element_by_id('id_identifier')
@@ -120,16 +120,16 @@ class FirstTimeHomePageVisitTest(BaseTest):
 		self.assertEqual(ident_req, 'true')
 		self.assertEqual(
 			input_identifier.get_attribute('placeholder'),
-			'Enter a projects identifier'
+			'Projects identifier'
 		)
 
 		input_submit = self.browser.find_element_by_id('id_submit')
-		self.assertEqual(input_submit.get_attribute('value'), 'Submit')
+		self.assertEqual(input_submit.get_attribute('type'), 'submit')
 
 	def test_layout_and_styling(self):
 
 		self.browser.get(self.live_server_url)
-		self.browser.set_window_size(1024, 768)
+
 
 
 	#def test_can_create_new_project(self):
@@ -197,17 +197,13 @@ class ProjectHomeTest(BaseTest):
 			form = self.browser.find_element_by_tag_name('form')
 
 			input_title = self.browser.find_element_by_id('id_title')
-			self.assertAlmostEqual(
-				input_title.location['x'] + input_title.size['width'] / 2,
-				423,
-				delta=5
-			)
+
 			title_req = input_title.get_attribute('required')
 			self.assertEqual(title_req, 'true')
 
 			self.assertEqual(
 				input_title.get_attribute('placeholder'),
-				'Enter User Story title'
+				'Story title'
 			)
 
 			input_estimate_time = self.browser.find_element_by_id('id_estimate_time')
@@ -216,11 +212,11 @@ class ProjectHomeTest(BaseTest):
 
 			self.assertEqual(
 				input_estimate_time.get_attribute('placeholder'),
-				'Enter User Stories estimate time'
+				'Story estimate time'
 			)
 
 			input_submit = self.browser.find_element_by_id('id_submit')
-			self.assertEqual(input_submit.get_attribute('value'), 'Submit')
+			self.assertEqual(input_submit.get_attribute('type'), 'submit')
 
 	def test_can_create_new_us(self):
 		self.create_new_projects()
