@@ -1,7 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 import unittest
-from django.test import LiveServerTestCase
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium.webdriver.common.keys import Keys
 from project.views import show_project
 from django.http import HttpRequest
@@ -35,7 +35,7 @@ user_stories_vals=[
 ]
 
 
-class BaseTest(LiveServerTestCase):
+class BaseTest(StaticLiveServerTestCase):
 	def setUp(self):
 		binary = FirefoxBinary('/usr/bin/firefox')
 		self.browser = webdriver.Firefox(firefox_binary=binary)
@@ -78,15 +78,12 @@ class FirstTimeHomePageVisitTest(BaseTest):
 		# and sees websites titele XP Tracker
 		self.assertIn('Projects', self.browser.title )
 
-		# and sees heading 'Projects'
-		header_text = self.browser.find_element_by_tag_name('h1').text
-		self.assertEqual(header_text, 'Projects')
+		header2_text = self.browser.find_element_by_tag_name('h1').text
+		self.assertEqual(header2_text, 'Create a new project')
 
 	def test_can_see_new_project_form(self):
 		self.browser.get(self.live_server_url)
 
-		header2_text = self.browser.find_element_by_tag_name('h2').text
-		self.assertEqual(header2_text, 'Create a new project')
 
 		form = self.browser.find_element_by_tag_name('form')
 
@@ -128,6 +125,12 @@ class FirstTimeHomePageVisitTest(BaseTest):
 
 		input_submit = self.browser.find_element_by_id('id_submit')
 		self.assertEqual(input_submit.get_attribute('value'), 'Submit')
+
+	def test_layout_and_styling(self):
+
+		self.browser.get(self.live_server_url)
+		self.browser.set_window_size(1024, 768)
+
 
 	#def test_can_create_new_project(self):
 	#	self.create_new_projects()
@@ -194,6 +197,11 @@ class ProjectHomeTest(BaseTest):
 			form = self.browser.find_element_by_tag_name('form')
 
 			input_title = self.browser.find_element_by_id('id_title')
+			self.assertAlmostEqual(
+				input_title.location['x'] + input_title.size['width'] / 2,
+				423,
+				delta=5
+			)
 			title_req = input_title.get_attribute('required')
 			self.assertEqual(title_req, 'true')
 

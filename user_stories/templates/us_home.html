@@ -1,19 +1,20 @@
-<html>
-<head>
-    <title>{{ title }}</title>
-</head>
-<body>
-    <h1>{{ title }}</h1>
+{% extends 'base.html' %}
+
+{% block title_text %}{{ title }}{% endblock %}
+{% block header_text %}{{ title }}{% endblock %}
+
+{% block content %}
     <h2>Create a User Story</h2>
     <form method="POST">{% csrf_token %}
+        <p style="text-align: center;">
         <input name="title" id="id_title" placeholder="Enter User Story title" required />
         <input name="estimate_time" id="id_estimate_time" placeholder="Enter User Stories estimate time" required/>
          <input type="submit" name="submit" id="id_submit" value="Submit">
+        </p>
     </form>
 <table id="id_list_user_stories">
     {% for us in us_stories %}
     <tr><td>{{us.title}}</td></tr>
     {% endfor %}
 </table>
-</body>
-</html>
+{% endblock %}

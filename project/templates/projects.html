@@ -1,10 +1,9 @@
-<html>
-<head>
-    <title>{{title}}</title>
-</head>
-<body>
-<h1>{{title}}</h1>
-<h2>Create a new project</h2>
+{% extends 'base.html' %}
+{% block title_text %}Projects{% endblock %}
+
+{% block header_text %}Create a new project{% endblock %}
+{% block content %}
+
 <form method="POST">{% csrf_token %}
     <input name="title" id="id_title" placeholder="Enter a projects title" required/>
     <input name="description" id="id_description" placeholder="Enter a projects description" required>
@@ -17,5 +16,4 @@
     <tr><td><a href="/projects/{{project.identifier}}/" >{{project.title}}</a></td></tr>
     {% endfor %}
 </table>
-</body>
-</html>
+{% endblock %}
