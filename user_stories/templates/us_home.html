@@ -5,14 +5,19 @@
 
 {% block content %}
     <h2>Create a User Story</h2>
-    <form method="POST">{% csrf_token %}
-        <p style="text-align: center;">
-        <input name="title" id="id_title" placeholder="Enter User Story title" required />
-        <input name="estimate_time" id="id_estimate_time" placeholder="Enter User Stories estimate time" required/>
-         <input type="submit" name="submit" id="id_submit" value="Submit">
-        </p>
+
+    <form method="POST" class="form-inline">{% csrf_token %}
+         <div class="form-group">
+             <label for="title">Titele</label>
+             <input type="text" class="form-control" name="title" id="id_title" placeholder="Title" required>
+            </div>
+        <div class="form-group">
+            <label for="estimate_time">Estimate time (hours)</label>
+            <input type="text" class="form-control" name="estimate_time" id="id_estimate_time" placeholder="Estimate time" required>
+        </div>
+        <button type="submit" name="submit" id="id_submit" class="btn btn-primary">Submit</button>
     </form>
-<table id="id_list_user_stories">
+<table class="table" id="id_list_user_stories">
     {% for us in us_stories %}
     <tr><td>{{us.title}}</td></tr>
     {% endfor %}

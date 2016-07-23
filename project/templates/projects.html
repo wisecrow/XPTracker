@@ -5,13 +5,30 @@
 {% block content %}
 
 <form method="POST">{% csrf_token %}
-    <input name="title" id="id_title" placeholder="Enter a projects title" required/>
-    <input name="description" id="id_description" placeholder="Enter a projects description" required>
-    <input name="release_date" id="id_release_date" placeholder="Enter a projects release date" required>
-    <input name="identifier" id="id_identifier" placeholder="Enter a projects identifier" required>
-    <input type="submit" name="submit" id="id_submit" value="Submit">
+    <fieldset class="form-group">
+        <label for="title">Title</label>
+        <input type="text" name="title" class="form-control" id="id_title" placeholder="Projects title" required>
+        </fieldset>
+
+    <fieldset class="form-group">
+        <label for="description">Description</label>
+        <input type="text" name="description" class="form-control" id="id_description" placeholder="Projects description" required>
+    </fieldset>
+
+    <fieldset class="form-group">
+        <label for="release_date">Release date</label>
+        <input type="text" name="release_date" class="form-control" id="id_release_date" placeholder="Projects release date" required>
+    </fieldset>
+
+    <fieldset class="form-group">
+        <label for="description">Identifier</label>
+        <input type="text" name="identifier" class="form-control" id="id_identifier" placeholder="Projects identifier" required>
+    </fieldset>
+
+     <button type="submit" id="id_submit" class="btn btn-default">Submit</button>
+
 </form>
-<table id="id_list_projects">
+<table class="table" id="id_list_projects">
     {% for project in projects %}
     <tr><td><a href="/projects/{{project.identifier}}/" >{{project.title}}</a></td></tr>
     {% endfor %}
