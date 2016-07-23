@@ -1,6 +1,7 @@
 from django.core.urlresolvers import resolve
 from django.test import TestCase
 from project.views import show_index, get_url_string, show_project, show_projects
+from user_stories.views import show_us_index
 from django.http import HttpRequest
 from django.template.loader import render_to_string
 from project.models import Project
@@ -19,6 +20,19 @@ class BaseTest(TestCase):
 		['My new project2', 'My new project description2', '2016-08-02', 'my-new-project2'],
 		['My new project3', 'My new project description3', '2016-08-03', 'my-new-project3'],
 		['My new project4', 'My new project description4', '2016-08-04', 'my-new-project4']
+	]
+
+	user_stories_fields = [
+		'title',
+		'estimate_time'
+	]
+
+	user_stories_vals = [
+		['User story1', 1],
+		['User story2', 2],
+		['User story3', 3],
+		['User story4', 4]
+
 	]
 
 	def get_new_projects_request(self, data):
@@ -124,15 +138,10 @@ class ProjectHomePageTest(BaseTest):
 		for data in BaseTest.projects_fields_vals:
 			self.assertContains(response, data[0])
 
-class UserStoriesIndexTest(BaseTest):
 
-	def test_us_index_resolves_correctly(self):
-		for data in BaseTest.projects_fields_vals:
-			show_projects(self.get_new_projects_request(data))
-			response = self.client.get('/projects/%s/user_stories/' % data[3])
-			self.assertEqual(response.status_code, 200)
-			self.assertTemplateUsed(response, 'us_home.html')
-			self.assertContains(response, 'User Stories')
+
+
+
 
 
 

@@ -22,24 +22,50 @@ projects_fields_vals=[
 	]
 
 
+user_stories_fields=[
+	'id_title',
+	'id_estimate_time'
+]
+user_stories_vals=[
+	['User story1', 1],
+	['User story2', 2],
+	['User story3', 3],
+	['User story4', 4]
+
+]
+
+
 class BaseTest(LiveServerTestCase):
 	def setUp(self):
-		# binary = FirefoxBinary('/usr/bin/firefox45')
-		# self.browser = webdriver.Firefox(firefox_binary=binary)
-		self.browser = webdriver.Firefox()
+		binary = FirefoxBinary('/usr/bin/firefox')
+		self.browser = webdriver.Firefox(firefox_binary=binary)
+		#self.browser = webdriver.Firefox()
 
 	# self.browser.implicitly_wait(3)
 
 	def tearDown(self):
 		self.browser.quit()
 
-	def create_new_projects(self, fields, vals_vals):
-
+	def create_new_model(self, fields, vals_vals, url, prefix={}):
 		for vals in vals_vals:
-			self.browser.get(self.live_server_url)
+			self.browser.get(url)
 			for i, val in enumerate(vals, 0):
-				self.browser.find_element_by_id(fields[i]).send_keys(vals[i])
+				val = vals[i]
+				prf = prefix.get(fields[i], '')
+				if prf:
+					val = '%s %s' % (val, prf)
+				self.browser.implicitly_wait(3)
+				self.browser.find_element_by_id(fields[i]).send_keys(val)
+
 			self.browser.find_element_by_id('id_submit').send_keys(Keys.ENTER)
+
+	def create_new_projects(self):
+		self.create_new_model(
+			project_id_fields,
+			projects_fields_vals,
+			self.live_server_url
+		)
+
 
 class FirstTimeHomePageVisitTest(BaseTest):
 	# LiveServerTestCase solves test isolation problem, but tests should be lauched by Django testruner - manage.py test
@@ -103,69 +129,104 @@ class FirstTimeHomePageVisitTest(BaseTest):
 		input_submit = self.browser.find_element_by_id('id_submit')
 		self.assertEqual(input_submit.get_attribute('value'), 'Submit')
 
-	def test_can_create_new_project(self):
-		self.create_new_projects(
-			project_id_fields,
-			projects_fields_vals
-
-		)
-
-		for vals in projects_fields_vals:
-			self.browser.get('%s/projects/%s/' % (self.live_server_url, vals[3]))
-			self.assertRegex(self.browser.current_url, '/projects/%s/$' % vals[3])
-			id_fields=project_id_fields
-			self.assertIn(vals[0], self.browser.title)
-			self.assertEqual(self.browser.find_element_by_id(id_fields[0]).text, vals[0])
-			self.assertEqual(self.browser.find_element_by_id(id_fields[1]).text, vals[1])
-			self.assertEqual(self.browser.find_element_by_id(id_fields[2]).text, vals[2])
+	#def test_can_create_new_project(self):
+	#	self.create_new_projects()
+	#
+	# 	for vals in projects_fields_vals:
+	# 		self.browser.get('%s/projects/%s/' % (self.live_server_url, vals[3]))
+	# 		self.assertRegex(self.browser.current_url, '/projects/%s/$' % vals[3])
+	# 		id_fields=project_id_fields
+	# 		self.assertIn(vals[0], self.browser.title)
+	# 		self.assertEqual(self.browser.find_element_by_id(id_fields[0]).text, vals[0])
+	# 		self.assertEqual(self.browser.find_element_by_id(id_fields[1]).text, vals[1])
+	# 		self.assertEqual(self.browser.find_element_by_id(id_fields[2]).text, vals[2])
 
 
 
 
 
-	def test_projects_index_page_has_project_rows(self):
-		self.create_new_projects(
-			project_id_fields,
-			projects_fields_vals
-		)
-
-		self.browser.get(self.live_server_url)
-		table = self.browser.find_element_by_id('id_list_projects')
-		rows = table.find_elements_by_tag_name('tr')
-		for vals in projects_fields_vals:
-			self.assertIn(vals[0], [row.text for row in rows])
-			alink = self.browser.find_element_by_link_text(vals[0])
-			self.assertEqual(alink.text, vals[0])
-
-	def test_projects_index_links_redirects_to_project_home(self):
-		self.create_new_projects(
-			project_id_fields,
-			projects_fields_vals
-		)
-
-
-		for vals in projects_fields_vals:
-			self.browser.get(self.live_server_url)
-			alink = self.browser.find_element_by_link_text(vals[0])
-			alink.click()
-			heading = self.browser.find_element_by_id('id_title').text
-			self.assertEqual(vals[0], heading)
+	# def test_projects_index_page_has_project_rows(self):
+	#	self.create_new_projects()
+	#
+	# 	self.browser.get(self.live_server_url)
+	# 	table = self.browser.find_element_by_id('id_list_projects')
+	# 	rows = table.find_elements_by_tag_name('tr')
+	# 	for vals in projects_fields_vals:
+	# 		self.assertIn(vals[0], [row.text for row in rows])
+	# 		alink = self.browser.find_element_by_link_text(vals[0])
+	# 		self.assertEqual(alink.text, vals[0])
+	#
+	# def test_projects_index_links_redirects_to_project_home(self):
+	#	self.create_new_projects()
+	#
+	#
+	# 	for vals in projects_fields_vals:
+	# 		self.browser.get(self.live_server_url)
+	# 		alink = self.browser.find_element_by_link_text(vals[0])
+	# 		alink.click()
+	# 		heading = self.browser.find_element_by_id('id_title').text
+	# 		self.assertEqual(vals[0], heading)
 
 
 class ProjectHomeTest(BaseTest):
 
 
 	def test_us_link_redirects_to_us_index_page(self):
-		self.create_new_projects(
-			project_id_fields,
-			projects_fields_vals
-		)
+
+		self.create_new_projects()
+
 		for vals in projects_fields_vals:
 			self.browser.get('%s/projects/%s/' % (self.live_server_url, vals[3]))
 			us_link = self.browser.find_element_by_link_text('User stories').click()
 			self.assertRegex(self.browser.current_url, '/projects/%s/user_stories/$' % vals[3])
 			header_text = self.browser.find_element_by_tag_name('h1').text
 			self.assertEqual(header_text, 'User Stories')
+
+	def test_can_see_us_form(self):
+		self. create_new_projects()
+		for vals in projects_fields_vals:
+			self.browser.get('%s/projects/%s/' % (self.live_server_url, vals[3]))
+			us_link = self.browser.find_element_by_link_text('User stories').click()
+
+			header2_text = self.browser.find_element_by_tag_name('h2').text
+			self.assertEqual(header2_text, 'Create a User Story')
+
+			form = self.browser.find_element_by_tag_name('form')
+
+			input_title = self.browser.find_element_by_id('id_title')
+			title_req = input_title.get_attribute('required')
+			self.assertEqual(title_req, 'true')
+
+			self.assertEqual(
+				input_title.get_attribute('placeholder'),
+				'Enter User Story title'
+			)
+
+			input_estimate_time = self.browser.find_element_by_id('id_estimate_time')
+			estimate_req = input_estimate_time.get_attribute('required')
+			self.assertEqual(estimate_req, 'true')
+
+			self.assertEqual(
+				input_estimate_time.get_attribute('placeholder'),
+				'Enter User Stories estimate time'
+			)
+
+			input_submit = self.browser.find_element_by_id('id_submit')
+			self.assertEqual(input_submit.get_attribute('value'), 'Submit')
+
+	def test_can_create_new_us(self):
+		self.create_new_projects()
+		for vals in projects_fields_vals:
+			url =  '%s/projects/%s/user_stories/' %  (self.live_server_url, vals[3])
+			# give each us a unique title to distinct from other projects us
+			prefix = {'id_title': vals[0]}
+			self.create_new_model(user_stories_fields, user_stories_vals, url, prefix=prefix)
+			table = self.browser.find_element_by_id('id_list_user_stories')
+			rows = table.find_elements_by_tag_name('tr')
+			for us_vals in user_stories_vals:
+				us_title = '%s %s' % (us_vals[0], vals[0])
+				self.assertIn(us_title, [row.text for row in rows])
+
 
 
 
