@@ -25,10 +25,11 @@
         <input type="text" name="identifier" class="form-control" id="id_identifier" placeholder="Projects identifier" required>
     </fieldset>
 
-     <button type="submit" id="id_submit" class="btn btn-default">Submit</button>
+     <button type="submit" name="submit" id="id_submit" class="btn btn-primary">Submit</button>
 
 </form>
-<table class="table" id="id_list_projects">
+
+<table class="table table-striped" id="id_list_projects">
     {% for project in projects %}
     <tr><td><a href="/projects/{{project.identifier}}/" >{{project.title}}</a></td></tr>
     {% endfor %}
