@@ -4,25 +4,30 @@
 {% block header_text %}Create a new project{% endblock %}
 {% block content %}
 
-<form method="POST">{% csrf_token %}
+<form method="POST" action="/projects/new">{% csrf_token %}
     <fieldset class="form-group">
         <label for="title">Title</label>
-        <input type="text" name="title" class="form-control" id="id_title" placeholder="Projects title" required>
+        <input type="text" name="title" class="form-control" id="id_title" placeholder="Projects title">
+        {% if error %}
+        <div class="form-group has-error">
+            <span class="help-block">{{ error }}</span>
+            </div>
+        {% endif %}
         </fieldset>
 
     <fieldset class="form-group">
         <label for="description">Description</label>
-        <input type="text" name="description" class="form-control" id="id_description" placeholder="Projects description" required>
+        <input type="text" name="description" class="form-control" id="id_description" placeholder="Projects description">
     </fieldset>
 
     <fieldset class="form-group">
         <label for="release_date">Release date</label>
-        <input type="text" name="release_date" class="form-control" id="id_release_date" placeholder="Projects release date" required>
+        <input type="text" name="release_date" class="form-control" id="id_release_date" placeholder="Projects release date" >
     </fieldset>
 
     <fieldset class="form-group">
         <label for="description">Identifier</label>
-        <input type="text" name="identifier" class="form-control" id="id_identifier" placeholder="Projects identifier" required>
+        <input type="text" name="identifier" class="form-control" id="id_identifier" placeholder="Projects identifier" >
     </fieldset>
 
      <button type="submit" name="submit" id="id_submit" class="btn btn-primary">Submit</button>

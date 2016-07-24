@@ -14,16 +14,21 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url
-from django.contrib import admin
+# from django.contrib import admin
 from project import views
+
 from user_stories import views as us_views
 
 urlpatterns = [
-    #url(r'^admin/', admin.site.urls),
+    # url(r'^admin/', admin.site.urls),
     url(r'^$', views.show_index, name='home'),
-	url(r'^projects/(.+)/user_stories/', us_views.show_us_index, name='us_index'),
-	url(r'^projects/(.+)/$', views.show_project, name='show_project'),
-	url(r'^projects/(.+)$', views.show_project, name='show_project'),
-	url(r'^projects/', views.show_projects, name='show_projects')
+    url(r'^projects/new', views.new_project, name='new_project'),
+    url(
+        r'^projects/(.+)/user_stories/',
+        us_views.show_us_index,
+        name='us_index'),
+    url(r'^projects/(.+)/$', views.show_project, name='show_project'),
+    url(r'^projects/(.+)$', views.show_project, name='show_project'),
+    url(r'^projects/', views.show_projects, name='show_projects')
 
 ]

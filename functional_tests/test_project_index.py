@@ -21,8 +21,8 @@ class FirstTimeHomePageVisitTest(BaseTest):
 		form = self.browser.find_element_by_tag_name('form')
 
 		input_title = self.browser.find_element_by_id('id_title')
-		title_req = input_title.get_attribute('required')
-		self.assertEqual(title_req, 'true')
+		# title_req = input_title.get_attribute('required')
+		# self.assertEqual(title_req, 'true')
 
 		self.assertEqual(
 			input_title.get_attribute('placeholder'),
@@ -31,8 +31,8 @@ class FirstTimeHomePageVisitTest(BaseTest):
 
 		input_description = self.browser.find_element_by_id('id_description')
 
-		desc_req = input_description.get_attribute('required')
-		self.assertEqual(desc_req, 'true')
+		# desc_req = input_description.get_attribute('required')
+		# self.assertEqual(desc_req, 'true')
 
 		self.assertEqual(
 			input_description.get_attribute('placeholder'),
@@ -40,8 +40,8 @@ class FirstTimeHomePageVisitTest(BaseTest):
 		)
 
 		input_release_date = self.browser.find_element_by_id('id_release_date')
-		rel_date_req = input_release_date.get_attribute('required')
-		self.assertEqual(rel_date_req, 'true')
+		# rel_date_req = input_release_date.get_attribute('required')
+		# self.assertEqual(rel_date_req, 'true')
 
 		self.assertEqual(
 			input_release_date.get_attribute('placeholder'),
@@ -49,8 +49,8 @@ class FirstTimeHomePageVisitTest(BaseTest):
 		)
 
 		input_identifier = self.browser.find_element_by_id('id_identifier')
-		ident_req = input_identifier.get_attribute('required')
-		self.assertEqual(ident_req, 'true')
+		# ident_req = input_identifier.get_attribute('required')
+		# self.assertEqual(ident_req, 'true')
 		self.assertEqual(
 			input_identifier.get_attribute('placeholder'),
 			'Projects identifier'

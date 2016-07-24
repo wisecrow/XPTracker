@@ -1,5 +1,4 @@
-from functional_tests.base import BaseTest
-from functional_tests.base import project_id_fields, projects_fields_vals, user_stories_fields, user_stories_vals
+from .base import BaseTest, project_id_fields, projects_fields_vals, user_stories_fields, user_stories_vals
 
 class UserStoriesTest(BaseTest):
 
