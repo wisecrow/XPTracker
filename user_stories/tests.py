@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.http import HttpRequest
-from project.tests import BaseTest
+from project.tests.base import BaseTest
 from project.views import show_projects
 from user_stories.views import show_us_index
 from project.models import Project

@@ -1,48 +1,46 @@
 from django.test import TestCase
+
 from django.http import HttpRequest
 
 
-
 class BaseTest(TestCase):
-	project_fields = [
-		'title',
-		'description',
-		'release_date',
-		'identifier'
-	]
+    project_fields = [
+        'title',
+        'description',
+        'release_date',
+        'identifier'
+    ]
 
-	projects_fields_vals = [
-		['My new project1', 'My new project description1', '2016-08-01', 'my-new-project1'],
-		['My new project2', 'My new project description2', '2016-08-02', 'my-new-project2'],
-		['My new project3', 'My new project description3', '2016-08-03', 'my-new-project3'],
-		['My new project4', 'My new project description4', '2016-08-04', 'my-new-project4']
-	]
+    projects_fields_vals = [
+        ['My new project1', 'My new project description1', '2016-08-01', 'my-new-project1'],
+        ['My new project2', 'My new project description2', '2016-08-02', 'my-new-project2'],
+        ['My new project3', 'My new project description3', '2016-08-03', 'my-new-project3'],
+        ['My new project4', 'My new project description4', '2016-08-04', 'my-new-project4']
+    ]
 
-	user_stories_fields = [
-		'title',
-		'estimate_time'
-	]
+    user_stories_fields = [
+        'title',
+        'estimate_time'
+    ]
 
-	user_stories_vals = [
-		['User story1', 1],
-		['User story2', 2],
-		['User story3', 3],
-		['User story4', 4]
+    user_stories_vals = [
+        ['User story1', 1],
+        ['User story2', 2],
+        ['User story3', 3],
+        ['User story4', 4]
 
-	]
+    ]
 
-	def get_new_projects_request(self, data):
-		request = HttpRequest()
-		request.method = 'POST'
-		request.POST['title'] = data[0]
-		request.POST['description'] = data[1]
-		request.POST['release_date'] = data[2]
-		request.POST['identifier'] = data[3]
-		return request
+    def get_new_projects_request(self, data):
+        request = HttpRequest()
+        request.method = 'POST'
+        request.POST['title'] = data[0]
+        request.POST['description'] = data[1]
+        request.POST['release_date'] = data[2]
+        request.POST['identifier'] = data[3]
+        return request
 
-
-
-#class ProjectHomePageTest(BaseTest):
+# class ProjectHomePageTest(BaseTest):
 
 # 	titles = {
 # 		'my new project': 'my-new-project',
@@ -92,6 +90,3 @@ class BaseTest(TestCase):
 # 		response = show_project(request, 'popopo')
 # 		self.assertContains(response, "popopo")
 #
-
-
-

@@ -1,8 +1,12 @@
 from unittest import skip
 
+from django.template.loader import render_to_string
+
 # from django.http import HttpRequest
 
 from project.models import Project
+
+from project.forms import ProjectForm
 
 from project.views import new_project
 
@@ -49,6 +53,16 @@ class ProjectViewsTest(BaseTest):
 
         for data in BaseTest.projects_fields_vals:
             self.assertContains(response, data[0])
+
+    @skip
+    def test_project_home_page_uses_form(self):
+        response = self.client.get('/projects/')
+        self.maxDiff = None
+        expected_html = render_to_string(
+            'projects.html', {'form': ProjectForm()}
+        )
+        # self.assertIsInstance(response.context['form'], ProjectForm)
+        self.assertMultiLineEqual(response.content.decode(), expected_html)
 
     @skip
     def test_validatation_error_sends_bank_to_index(self):

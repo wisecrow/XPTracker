@@ -28,7 +28,6 @@ urlpatterns = [
         us_views.show_us_index,
         name='us_index'),
     url(r'^projects/(.+)/$', views.show_project, name='show_project'),
-    url(r'^projects/(.+)$', views.show_project, name='show_project'),
     url(r'^projects/', views.show_projects, name='show_projects')
 
 ]
