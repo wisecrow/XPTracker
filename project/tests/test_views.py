@@ -6,7 +6,7 @@ from django.http import HttpRequest
 
 from project.models import Project
 
-from project.forms import ProjectForm
+from project.forms import ProjectForm, ERROR_MESSAGES
 
 from project.views import new_project, show_projects
 
@@ -58,10 +58,9 @@ class ProjectViewsTest(BaseTest):
         response = self.client.get('/projects/')
         self.assertIsInstance(response.context['form'], ProjectForm)
 
-    @skip
     def test_validatation_error_sends_bank_to_index(self):
         response = self.client.post('/projects/', data={'title': ''})
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'projects.html')
-        expected_error = "Project title cannot be empty"
+        expected_error = ERROR_MESSAGES['title']['required']
         self.assertContains(response, expected_error)
