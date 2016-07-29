@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from project.forms import ProjectForm
+from project.forms import ProjectForm, ERROR_MESSAGES
 
 
 class ProjectFormTest(TestCase):
@@ -16,19 +16,9 @@ class ProjectFormTest(TestCase):
     def test_form_validation_empty_input(self):
         form = ProjectForm(data={'title': ''})
         self.assertFalse(form.is_valid())
-        self.assertEqual(
-            form.errors['title'],
-            ["Project title cannot be empty"]
-        )
-        self.assertEqual(
-            form.errors['description'],
-            ["Project description cannot be empty"]
-        )
-        self.assertEqual(
-            form.errors['release_date'],
-            ["Project release date cannot be empty"]
-        )
-        self.assertEqual(
-            form.errors['identifier'],
-            ["Project identifier cannot be empty"]
-        )
+        fields = ['title', 'description', 'release_date', 'identifier']
+        for field in fields:
+            self.assertEqual(
+                form.errors[field],
+                [ERROR_MESSAGES.get(field).get('required')]
+            )

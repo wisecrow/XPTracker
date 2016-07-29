@@ -41,7 +41,7 @@ def show_projects(request):
     projects = Project.objects.all()
     return render(request, 'projects.html', {
         'title': 'Projects',
-        'form': ProjectForm,
+        'form': ProjectForm(),
         'projects': projects})
 
 
