@@ -38,6 +38,12 @@ user_stories_vals = [
 
 ]
 
+PROOJECT_FIELD_ID_MAP = {
+    'title': 'id_title',
+    'description': 'id_description',
+    'release_date': 'id_release_date',
+    'identifier': 'id_identifier'
+}
 
 class BaseTest(StaticLiveServerTestCase):
 
@@ -69,3 +75,6 @@ class BaseTest(StaticLiveServerTestCase):
             projects_fields_vals,
             self.live_server_url
         )
+
+    def find_element_by_field_id(self, field):
+        return self.browser.find_element_by_id(PROOJECT_FIELD_ID_MAP[field])

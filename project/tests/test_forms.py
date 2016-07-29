@@ -4,7 +4,7 @@ from project.forms import ProjectForm, ERROR_MESSAGES
 
 
 class ProjectFormTest(TestCase):
-
+    
     def test_form_renders_input(self):
         form = ProjectForm()
         # self.fail(form.as_p())

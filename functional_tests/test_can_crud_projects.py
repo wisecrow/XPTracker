@@ -1,8 +1,13 @@
 from unittest import skip
 
+from project.models import PROJECT_FIELDS
+
+from project.forms import ERROR_MESSAGES
+
 from functional_tests.base import BaseTest, projects_fields_vals, \
     project_id_fields
 
+from .base import PROOJECT_FIELD_ID_MAP
 
 class FirstTimeHomePageVisitTest(BaseTest):
     """LiveServerTestCase solves test isolation problem.
@@ -25,7 +30,7 @@ class FirstTimeHomePageVisitTest(BaseTest):
 
         # form = self.browser.find_element_by_tag_name('form')
 
-        input_title = self.browser.find_element_by_id('id_title')
+        input_title = self.find_element_by_field_id('title')
         # title_req = input_title.get_attribute('required')
         # self.assertEqual(title_req, 'true')
 
@@ -33,7 +38,7 @@ class FirstTimeHomePageVisitTest(BaseTest):
             input_title.get_attribute('placeholder'),
             'Projects title')
 
-        input_description = self.browser.find_element_by_id('id_description')
+        input_description = self.find_element_by_field_id('description')
 
         # desc_req = input_description.get_attribute('required')
         # self.assertEqual(desc_req, 'true')
@@ -42,7 +47,7 @@ class FirstTimeHomePageVisitTest(BaseTest):
             input_description.get_attribute('placeholder'),
             'Projects description')
 
-        input_release_date = self.browser.find_element_by_id('id_release_date')
+        input_release_date = self.find_element_by_field_id('release_date')
         # rel_date_req = input_release_date.get_attribute('required')
         # self.assertEqual(rel_date_req, 'true')
 
@@ -51,7 +56,7 @@ class FirstTimeHomePageVisitTest(BaseTest):
             'Projects release date'
         )
 
-        input_identifier = self.browser.find_element_by_id('id_identifier')
+        input_identifier = self.find_element_by_field_id('identifier')
         # ident_req = input_identifier.get_attribute('required')
         # self.assertEqual(ident_req, 'true')
         self.assertEqual(
@@ -99,30 +104,16 @@ class FirstTimeHomePageVisitTest(BaseTest):
             alink = self.browser.find_element_by_link_text(vals[0])
             alink.click()
             self.browser.implicitly_wait(10)
-            heading = self.browser.find_element_by_id('id_title').text
+            heading = self.find_element_by_field_id('title').text
             self.assertEqual(vals[0], heading)
 
 
 class ProjecValidationTest(BaseTest):
 
-    @skip
     def test_cannot_add_empty_vals(self):
-        self.browser.get(self.live_server_url)
-        self.browser.find_element_by_id('id_title').send_keys('\n')
-        error = self.browser.find_element_by_css_selector('.has-error')
-        self.assertEqual(error.text, "Project title cannot be empty")
-
-        self.browser.get(self.live_server_url)
-        self.browser.find_element_by_id('id_description').send_keys('\n')
-        error = self.browser.find_element_by_css_selector('.has-error')
-        self.assertEqual(error.text, "Project description cannot be empty")
-
-        self.browser.get(self.live_server_url)
-        self.browser.find_element_by_id('id_release_date').send_keys('\n')
-        error = self.browser.find_element_by_css_selector('.has-error')
-        self.assertEqual(error.text, "Project release date cannot be empty")
-
-        self.browser.get(self.live_server_url)
-        self.browser.find_element_by_id('id_identifier').send_keys('\n')
-        error = self.browser.find_element_by_css_selector('.has-error')
-        self.assertEqual(error.text, "Project identifier cannot be empty")
+        for i, field in enumerate(PROJECT_FIELDS, 0):
+            self.browser.get(self.live_server_url)
+            #import pdb; pdb.set_trace()
+            self.find_element_by_field_id(field).send_keys('\n')
+            error = self.browser.find_elements_by_class_name('has-error')[i]
+            self.assertEqual(error.text, ERROR_MESSAGES[field]['required'])

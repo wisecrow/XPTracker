@@ -11,6 +11,7 @@ class UserStoriesTest(BaseTest):
             self.browser.get(
                 '%s/projects/%s/' % (self.live_server_url, vals[3])
             )
+            self.browser.implicitly_wait(10)
             self.browser.find_element_by_link_text(
                 'User stories').click()
             self.assertRegex(
