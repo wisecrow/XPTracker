@@ -18,23 +18,12 @@ def show_index(request):
 
 
 def new_project(request):
-    if request.method == 'POST':
-        identifier = request.POST.get('identifier', '')
-        p1 = Project(
-            title=request.POST.get('title', ''),
-            description=request.POST.get('description', ''),
-            release_date=request.POST.get('release_date', ''),
-            identifier=identifier
-        )
-        try:
-            # run for SQLite validation enforcement
-            p1.full_clean()
-            p1.save()
-            return redirect(p1)
-        except ValidationError:
-            pass
+    form = ProjectForm(data=request.POST)
+    if form.is_valid():
+        project = form.save()
+        return redirect(project)
 
-    return redirect('show_projects')
+    return render(request, 'projects.html', {'form': form})
 
 
 def show_projects(request):

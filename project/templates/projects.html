@@ -7,23 +7,38 @@
 <form method="POST" action="{% url 'new_project' %}">{% csrf_token %}
     <fieldset class="form-group">
        {{ form.title }}
-        {% if error %}
+        {% if form.errors %}
         <div class="form-group has-error">
-            <span class="help-block">{{ error }}</span>
-            </div>
+            <div class="help-block">{{ form.title.errors }}</div>
+         </div>
         {% endif %}
         </fieldset>
 
     <fieldset class="form-group">
         {{ form.description }}
+        {% if form.errors %}
+        <div class="form-group has-error">
+            <div class="help-block">{{ form.description.errors }}</div>
+         </div>
+        {% endif %}
     </fieldset>
 
     <fieldset class="form-group">
         {{ form.release_date}}
+        {% if form.errors %}
+        <div class="form-group has-error">
+            <div class="help-block">{{ form.release_date.errors }}</div>
+         </div>
+        {% endif %}
     </fieldset>
 
     <fieldset class="form-group">
        {{ form.identifier }}
+        {% if form.errors %}
+        <div class="form-group has-error">
+            <div class="help-block">{{ form.identifier.errors }}</div>
+         </div>
+        {% endif %}
     </fieldset>
 
      <button type="submit" name="submit" id="id_submit" class="btn btn-primary">Submit</button>

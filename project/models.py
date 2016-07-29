@@ -2,6 +2,7 @@ from django.core.urlresolvers import reverse
 
 from django.db import models
 
+PROJECT_FIELDS = ['title', 'description', 'release_date', 'identifier']
 
 class Project(models.Model):
     """Model for project."""
