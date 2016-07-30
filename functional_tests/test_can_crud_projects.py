@@ -113,7 +113,9 @@ class ProjecValidationTest(BaseTest):
     def test_cannot_add_empty_vals(self):
         for i, field in enumerate(PROJECT_FIELDS, 0):
             self.browser.get(self.live_server_url)
+
             #import pdb; pdb.set_trace()
+            self.browser.implicitly_wait(10)
             self.find_element_by_field_id(field).send_keys('\n')
             error = self.browser.find_elements_by_class_name('has-error')[i]
             self.assertEqual(error.text, ERROR_MESSAGES[field]['required'])

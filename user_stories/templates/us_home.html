@@ -6,7 +6,7 @@
 {% block content %}
     <h2>Create a User Story</h2>
 
-    <form method="POST" class="form-inline">{% csrf_token %}
+    <form method="POST" action="{% url 'new_us' project_id %}" class="form-inline">{% csrf_token %}
          <div class="form-group">
              <label for="title">Titele</label>
              <input type="text" class="form-control" name="title" id="id_title" placeholder="Story title" required>

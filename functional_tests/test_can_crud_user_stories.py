@@ -24,6 +24,7 @@ class UserStoriesTest(BaseTest):
     def test_can_see_us_form(self):
         self. create_new_projects()
         for vals in projects_fields_vals:
+            self.browser.implicitly_wait(10)
             self.browser.get(
                 '%s/projects/%s/' % (self.live_server_url, vals[3])
             )

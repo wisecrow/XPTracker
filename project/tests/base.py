@@ -1,3 +1,5 @@
+from project.models import Project
+
 from django.test import TestCase
 
 from django.http import HttpRequest
@@ -39,6 +41,15 @@ class BaseTest(TestCase):
         request.POST['release_date'] = data[2]
         request.POST['identifier'] = data[3]
         return request
+
+    def create_new_project(self):
+        project = Project(
+            title='Title1',
+            description='Description',
+            release_date='2016-09-01',
+            identifier='title1')
+        project.save()
+        return project
 
 # class ProjectHomePageTest(BaseTest):
 
