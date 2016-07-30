@@ -119,3 +119,5 @@ class ProjecValidationTest(BaseTest):
             self.find_element_by_field_id(field).send_keys('\n')
             error = self.browser.find_elements_by_class_name('has-error')[i]
             self.assertEqual(error.text, ERROR_MESSAGES[field]['required'])
+
+

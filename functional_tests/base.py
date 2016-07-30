@@ -65,6 +65,7 @@ class BaseTest(StaticLiveServerTestCase):
                 prf = prefix.get(fields[i], '')
                 if prf:
                     val = '%s %s' % (val, prf)
+                self.browser.implicitly_wait(5)
                 self.browser.find_element_by_id(fields[i]).send_keys(val)
 
             self.browser.find_element_by_id('id_submit').send_keys(Keys.ENTER)

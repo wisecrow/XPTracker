@@ -22,3 +22,4 @@ class ProjectFormTest(TestCase):
                 form.errors[field],
                 [ERROR_MESSAGES.get(field).get('required')]
             )
+
