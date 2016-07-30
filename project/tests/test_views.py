@@ -59,7 +59,7 @@ class ProjectViewsTest(BaseTest):
         self.assertIsInstance(response.context['form'], ProjectForm)
 
     def test_validatation_error_sends_bank_to_index(self):
-        response = self.client.post('/projects/new/', data={'title': ''})
+        response = self.client.post('/projects/new', data={'title': ''})
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'projects.html')
 

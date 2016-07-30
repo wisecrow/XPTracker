@@ -8,12 +8,20 @@
 
     <form method="POST" action="{% url 'new_us' project_id %}" class="form-inline">{% csrf_token %}
          <div class="form-group">
-             <label for="title">Titele</label>
-             <input type="text" class="form-control" name="title" id="id_title" placeholder="Story title" required>
+             {{ form.title }}
+              {% if form.errors %}
+        <div class="form-group has-error">
+            <div class="help-block">{{ form.title.errors }}</div>
+         </div>
+        {% endif %}
             </div>
         <div class="form-group">
-            <label for="estimate_time">Estimate time (hours)</label>
-            <input type="text" class="form-control" name="estimate_time" id="id_estimate_time" placeholder="Story estimate time" required>
+            {{ form.estimate_time }}
+             {% if form.errors %}
+        <div class="form-group has-error">
+            <div class="help-block">{{ form.estimate_time.errors }}</div>
+         </div>
+        {% endif %}
         </div>
         <button type="submit" name="submit" id="id_submit" class="btn btn-primary">Submit</button>
     </form>

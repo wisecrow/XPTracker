@@ -2,7 +2,10 @@ from django.http import HttpRequest
 
 from user_stories.views import show_us_index, new_us
 
+from user_stories.forms import UserStoryForm
+
 from .base import get_new_us_request
+
 from project.tests.base import BaseTest
 
 class IndexTest(BaseTest):
@@ -34,3 +37,9 @@ class CreatNewTest(BaseTest):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response['location'], '/projects/%s/user_stories/' % project.identifier)
 
+    def test_template_uses_form(self):
+        project = self.create_new_project()
+        response = self.client.get('/projects/%s/user_stories/' % project.identifier)
+        self.assertIsInstance(response.context['form'], UserStoryForm)
+
+ #  def test_us_shows

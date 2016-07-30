@@ -38,8 +38,8 @@ class UserStoriesTest(BaseTest):
             # form = self.browser.find_element_by_tag_name('form')
 
             input_title = self.browser.find_element_by_id('id_title')
-            title_req = input_title.get_attribute('required')
-            self.assertEqual(title_req, 'true')
+            # title_req = input_title.get_attribute('required')
+            # self.assertEqual(title_req, 'true')
 
             self.assertEqual(
                 input_title.get_attribute('placeholder'),
@@ -49,8 +49,8 @@ class UserStoriesTest(BaseTest):
             input_estimate_time = self.browser.find_element_by_id(
                 'id_estimate_time'
             )
-            estimate_req = input_estimate_time.get_attribute('required')
-            self.assertEqual(estimate_req, 'true')
+            # estimate_req = input_estimate_time.get_attribute('required')
+            # self.assertEqual(estimate_req, 'true')
 
             self.assertEqual(
                 input_estimate_time.get_attribute('placeholder'),
