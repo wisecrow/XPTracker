@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title_text %}{{title}}{% endblock %}
+{% block header_text %}{{title}}{% endblock %}
+{% block content %}
+<form>
+    <fieldset class="form-group">
+    <input name="firstname" id="id_firstname" placeholder="Developers first name">
+        </fieldset>
+    <fieldset class="form-group">
+        <input name="lastname" id="id_lastname" placeholder="Developers last name">
+        </fieldset>
+    <fieldset class="form-group">
+    <input name="email" id="id_email" placeholder="Developers email">
+        </fieldset>
+</form>
+{% endblock %}

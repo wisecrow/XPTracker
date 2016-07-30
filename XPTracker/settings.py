@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'project',
     'user_stories',
-    'XPTracker'
+    'XPTracker',
+    'users',
 ]
 
 MIDDLEWARE_CLASSES = [
