@@ -78,3 +78,5 @@ class UserStoriesTest(BaseTest):
             for us_vals in user_stories_vals:
                 us_title = '%s %s' % (us_vals[0], vals[0])
                 self.assertIn(us_title, [row.text for row in rows])
+
+ 

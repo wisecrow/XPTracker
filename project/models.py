@@ -10,7 +10,7 @@ class Project(models.Model):
     title = models.TextField()
     description = models.TextField()
     release_date = models.DateField()
-    identifier = models.TextField(unique=True)
+    identifier = models.SlugField(unique=True)
 
     def get_absolute_url(self):
         return reverse('show_project', args=[self.identifier])

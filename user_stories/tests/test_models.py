@@ -20,3 +20,4 @@ class UserStoriesModelTest(BaseTest):
         u1 = UserStory.objects.all()[0]
         self.assertEqual(u1.title, 'Nauja us')
         self.assertEqual(u1.project.title, project.title)
+

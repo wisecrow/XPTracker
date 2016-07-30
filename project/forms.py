@@ -7,7 +7,9 @@ ERROR_MESSAGES = {
     'title': {'required': "Project title cannot be empty"},
     'description': {'required': "Project description cannot be empty"},
     'release_date': {'required': "Project release date cannot be empty"},
-    'identifier': {'required': "Project identifier cannot be empty"}
+    'identifier': {
+        'required': "Project identifier cannot be empty",
+        'no_lt': 'Only letters, numbers and underscores allowed!'}
 }
 
 class ProjectForm(forms.ModelForm):
