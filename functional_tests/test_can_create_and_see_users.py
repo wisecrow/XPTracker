@@ -40,7 +40,20 @@ class ProjectPageTest(BaseTest):
                 'Developers email'
             )
 
-
+    def test_show_list_of_devs_after_form_submit(self):
+        self.create_new_projects()
+        for vals in projects_fields_vals:
+            self.browser.get(self.live_server_url)
+            self.browser.find_element_by_link_text(vals[0]).click()
+            self.browser.implicitly_wait(10)
+            alink = self.browser.find_element_by_link_text('Developers').click()
+            self.browser.find_element_by_id('id_firstname').send_keys("Aloysius")
+            self.browser.find_element_by_id('id_lastname').send_keys('Proscorus')
+            self.browser.find_element_by_id('id_email').send_keys('ciber@gmail.com')
+            self.browser.find_element_by_id('id_submit').click()
+            table = self.browser.find_element_by_id('id_list_developrs')
+            rows = table.find_elements_by_tag_name('tr')
+            self.assertIn('Aloysius', [row.text for row in rows])
 
 
 

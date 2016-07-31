@@ -4,13 +4,14 @@
 {% block content %}
 <form>
     <fieldset class="form-group">
-    <input name="firstname" id="id_firstname" placeholder="Developers first name">
+    {{form.firstname}}
         </fieldset>
     <fieldset class="form-group">
-        <input name="lastname" id="id_lastname" placeholder="Developers last name">
+        {{form.lastname}}
         </fieldset>
     <fieldset class="form-group">
-    <input name="email" id="id_email" placeholder="Developers email">
+    {{form.email}}
         </fieldset>
+    <button type="submit" name="submit" id="id_submit" class="btn btn-primary">Submit</button>
 </form>
 {% endblock %}
