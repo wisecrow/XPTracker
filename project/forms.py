@@ -13,6 +13,7 @@ ERROR_MESSAGES = {
 }
 
 class ProjectForm(forms.ModelForm):
+    use_required_attribute = False
     class Meta:
         model = Project
         fields = tuple(PROJECT_FIELDS)

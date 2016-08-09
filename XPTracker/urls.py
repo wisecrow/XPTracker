@@ -17,12 +17,13 @@ from django.conf.urls import url, include
 # from django.contrib import admin
 from project import views
 
-from users.views import show_index
+from users.views import show_index, new_developer
 from user_stories import views as us_views
 
 urlpatterns = [
     # url(r'^admin/', admin.site.urls),
     url(r'^projects/(.+)/user_stories/new/', us_views.new_us, name='new_us'),
+    url(r'^projects/(.+)/developers/new/', new_developer, name='new_developer'),
     url(
         r'^projects/(.+)/user_stories/',
         us_views.show_us_index,

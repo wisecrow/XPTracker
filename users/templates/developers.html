@@ -2,7 +2,7 @@
 {% block title_text %}{{title}}{% endblock %}
 {% block header_text %}{{title}}{% endblock %}
 {% block content %}
-<form>
+<form method="POST" action="{% url 'new_developer' project_id %}">{% csrf_token %}
     <fieldset class="form-group">
     {{form.firstname}}
         </fieldset>
@@ -14,4 +14,10 @@
         </fieldset>
     <button type="submit" name="submit" id="id_submit" class="btn btn-primary">Submit</button>
 </form>
+
+<table class="table table-striped" id="id_list_developers">
+    {% for developer in developers %}
+    <tr><td>{{developer.firstname}} {{developer.lastname}}</td></tr>
+    {% endfor %}
+</table>
 {% endblock %}
