@@ -23,3 +23,15 @@ class ProjectFormTest(TestCase):
                 [ERROR_MESSAGES.get(field).get('required')]
             )
 
+    def test_form_validation_past_release_date(self):
+        data = {
+            'title': 'Title12',
+            'description': 'Desctiptiondfdfd',
+            'release_date': '1900-01-01',
+            'identifier': 'sdsdsdsww'
+        }
+
+        form = ProjectForm(data=data)
+        self.assertFalse(form.is_valid())
+        self.assertEqual(form.errors['release_date'], [ERROR_MESSAGES['release_date']['only_future']])
+

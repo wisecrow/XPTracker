@@ -20,10 +20,10 @@ class BaseTest(TestCase):
     ]
 
     projects_fields_vals = [
-        ['My new project1', 'My new project description1', '2016-08-01', 'my-new-project1'],
-        ['My new project2', 'My new project description2', '2016-08-02', 'my-new-project2'],
-        ['My new project3', 'My new project description3', '2016-08-03', 'my-new-project3'],
-        ['My new project4', 'My new project description4', '2016-08-04', 'my-new-project4']
+        ['My new project1', 'My new project description1', '2016-10-01', 'my-new-project1'],
+        ['My new project2', 'My new project description2', '2016-10-02', 'my-new-project2'],
+        ['My new project3', 'My new project description3', '2016-10-03', 'my-new-project3'],
+        ['My new project4', 'My new project description4', '2016-10-04', 'my-new-project4']
     ]
 
     user_stories_fields = [

@@ -1,5 +1,7 @@
 from unittest import skip
 
+from selenium.webdriver.common.keys import Keys
+
 from project.models import PROJECT_FIELDS
 
 from project.forms import ERROR_MESSAGES
@@ -120,4 +122,13 @@ class ProjecValidationTest(BaseTest):
             error = self.browser.find_elements_by_class_name('has-error')[i]
             self.assertEqual(error.text, ERROR_MESSAGES[field]['required'])
 
-
+    def test_can_not_add_past_release_date(self):
+        self.browser.get(self.live_server_url)
+        self.browser.find_element_by_id('id_title').send_keys('kksksks')
+        self.browser.find_element_by_id('id_description').send_keys('kksksksddd')
+        self.browser.find_element_by_id('id_release_date').send_keys('1900-01-01')
+        self.browser.find_element_by_id('id_identifier').send_keys('kksk-kkkd')
+        self.browser.find_element_by_id('id_submit').send_keys(Keys.ENTER)
+        errors = self.browser.find_elements_by_class_name('has-error')
+        # errors  has index same as order of fields. release_date id third in the
+        self.assertEqual(errors[2].text, ERROR_MESSAGES['release_date']['only_future'])

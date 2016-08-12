@@ -21,3 +21,4 @@ class DeveloperFormTest(TestCase):
             self.assertEqual(
                 form.errors[field], [ERROR_MESSAGES.get(field).get('required')]
             )
+
