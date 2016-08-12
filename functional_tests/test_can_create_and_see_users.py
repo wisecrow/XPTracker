@@ -1,4 +1,6 @@
 from functional_tests.base import BaseTest, projects_fields_vals
+from users.models import FIELDS
+from users.forms import FIELDS_IDS, ERROR_MESSAGES
 
 class ProjectPageTest(BaseTest):
 
@@ -59,5 +61,18 @@ class ProjectPageTest(BaseTest):
             rows = table.find_elements_by_tag_name('tr')
             self.assertIn('Aloysius Proscorus', [row.text for row in rows])
 
+class DeveloperValidationTest(BaseTest):
 
-
+    def test_cannot_add_empty_vals(self):
+        self.create_new_projects()
+        for i, vals in enumerate(projects_fields_vals):
+            url = '%s/projects/%s/developers/' % (self.live_server_url, vals[3])
+            self.browser.get(url)
+            for ii, field in enumerate(FIELDS):
+                self.browser.implicitly_wait(10)
+                self.browser.find_element_by_id(FIELDS_IDS.get(field)).send_keys('\n')
+                #import time
+                #time.sleep(10)
+                self.browser.find_element_by_id('id_submit').click()
+                error = self.browser.find_elements_by_class_name('has-error')[ii]
+                self.assertEqual(error.text, ERROR_MESSAGES[field]['required'])

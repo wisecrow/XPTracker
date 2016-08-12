@@ -5,12 +5,27 @@
 <form method="POST" action="{% url 'new_developer' project_id %}">{% csrf_token %}
     <fieldset class="form-group">
     {{form.firstname}}
+    {% if form.errors %}
+        <div class="form-group has-error">
+            <div class="help-block">{{ form.firstname.errors }}</div>
+         </div>
+        {% endif %}
         </fieldset>
     <fieldset class="form-group">
         {{form.lastname}}
+        {% if form.errors %}
+        <div class="form-group has-error">
+            <div class="help-block">{{ form.lastname.errors }}</div>
+         </div>
+        {% endif %}
         </fieldset>
     <fieldset class="form-group">
     {{form.email}}
+    {% if form.errors %}
+        <div class="form-group has-error">
+            <div class="help-block">{{ form.email.errors }}</div>
+         </div>
+        {% endif %}
         </fieldset>
     <button type="submit" name="submit" id="id_submit" class="btn btn-primary">Submit</button>
 </form>

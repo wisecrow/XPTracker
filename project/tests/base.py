@@ -4,6 +4,12 @@ from django.test import TestCase
 
 from django.http import HttpRequest
 
+PROJECT_TEST_VALS = {
+    'title': 'My new project1',
+    'description': 'My new project description1',
+    'release_date': '2016-10-01',
+    'identifier': 'my-new-procect1'
+}
 
 class BaseTest(TestCase):
     project_fields = [
@@ -44,10 +50,10 @@ class BaseTest(TestCase):
 
     def create_new_project(self):
         project = Project(
-            title='Title1',
-            description='Description',
-            release_date='2016-09-01',
-            identifier='title1')
+            title=PROJECT_TEST_VALS.get('title'),
+            description=PROJECT_TEST_VALS.get('description'),
+            release_date=PROJECT_TEST_VALS.get('release_date'),
+            identifier=PROJECT_TEST_VALS.get('identifier'))
         project.save()
         return project
 

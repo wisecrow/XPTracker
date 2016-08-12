@@ -17,7 +17,12 @@ def show_index(request, id):
 def new_developer(request, id):
     projects = Project.objects.filter(identifier=id)
     form = NewDeveloperForm(data=request.POST)
+    developers = Developer.objects.all()
     if form.is_valid():
         form.save()
         return redirect('/projects/%s/developers/' % projects[0].identifier)
-
+    return render(request, 'developers.html', {
+        'form': form,
+        'project_id': projects[0].identifier,
+        'title': 'Developers',
+        'developers': developers})
