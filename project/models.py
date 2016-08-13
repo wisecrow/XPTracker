@@ -1,8 +1,10 @@
 from django.core.urlresolvers import reverse
 
+from XPTracker.base import PROJECT_TITLE, PROJECT_DESCR, PROJECT_RELEASE_DATE, PROJECT_ID
+
 from django.db import models
 
-PROJECT_FIELDS = ['title', 'description', 'release_date', 'identifier']
+FIELDS = [PROJECT_TITLE, PROJECT_DESCR, PROJECT_RELEASE_DATE, PROJECT_ID]
 
 class Project(models.Model):
     """Model for project."""

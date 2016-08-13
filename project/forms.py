@@ -2,7 +2,8 @@ from datetime import date
 
 from django import forms
 
-from project.models import Project, PROJECT_FIELDS
+from project.models import Project
+from XPTracker.base import BaseProjectModel
 
 
 ERROR_MESSAGES = {
@@ -18,9 +19,10 @@ class ProjectForm(forms.ModelForm):
 
     # override django 1.10 added feature to disable html validation
     use_required_attribute = False
+
     class Meta:
         model = Project
-        fields = tuple(PROJECT_FIELDS)
+        fields = ('title', 'description', 'release_date', 'identifier')
         validators = []
         widgets = {
             'title': forms.fields.TextInput(attrs={

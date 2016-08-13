@@ -4,7 +4,7 @@ from django.template.loader import render_to_string
 
 from django.http import HttpRequest
 
-from project.models import Project, PROJECT_FIELDS
+from project.models import Project, FIELDS
 
 from project.forms import ProjectForm, ERROR_MESSAGES
 
@@ -62,6 +62,6 @@ class ProjectViewsTest(BaseTest):
         response = self.client.post('/projects/new/', data={'title': ''})
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'projects.html')
-        for pr_field in PROJECT_FIELDS:
+        for pr_field in FIELDS:
             expected_error = ERROR_MESSAGES[pr_field]['required']
             self.assertContains(response, expected_error)
