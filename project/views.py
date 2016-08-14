@@ -1,6 +1,7 @@
 # import re
 
 from django.core.exceptions import ValidationError
+from iterations.models import Iteration
 
 from django.http import HttpResponseNotFound
 
@@ -39,11 +40,18 @@ def show_projects(request):
 def show_project(request, id):
     projects = Project.objects.filter(identifier=id)
     user_stories = UserStory.objects.filter(project=projects[0])
+    iterations = []
+    for user_story in user_stories:
+        iters = Iteration.objects.filter(user_story=user_story)
+        if iters:
+            iterations.append(iters[0])
     if not projects:
         return HttpResponseNotFound('Page not found!')
     return render(request, 'project.html', {
         'project': projects[0],
-        'user_stories': user_stories})
+        'user_stories': user_stories,
+        'iterations': iterations
+    })
 
 
 # def get_url_string(title):

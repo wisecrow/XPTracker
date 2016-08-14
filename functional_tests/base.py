@@ -117,5 +117,6 @@ class BaseTest(StaticLiveServerTestCase):
         assert 'id_user_story' in vals.keys()
         for field in ITERATION_FIELDS:
             val = vals.get(field) or ITERATION_TEST_VALS.get(field)
+            #self.wait_for_element_with_id(field)
             self.browser.find_element_by_id(field).send_keys(val)
         self.browser.find_element_by_id('id_submit').send_keys(Keys.ENTER)

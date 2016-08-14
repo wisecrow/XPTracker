@@ -7,6 +7,9 @@
     {% if user_stories %}
          <a href="/projects/{{project.identifier}}/iterations/">Iterations</a>
     {% endif %}
+     {% if iterations %}
+         <a href="/projects/{{project.identifier}}/tasks/">Tasks</a>
+      {% endif %}
     <h1 id="id_title">{{project.title}}</h1>
     <h2 id="id_description">{{project.description}}</h2>
     <h2 id="id_release_date">{{project.release_date|date:"Y-m-d"}}</h2>
