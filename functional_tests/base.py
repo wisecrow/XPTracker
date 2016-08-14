@@ -16,6 +16,13 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 US_VALS = {'title': 'Test US title', 'estimate_time': 6}
 
+ITERATION_TEST_VALS = {
+    'id_title': 'Iteration title',
+    'id_duration': 3,
+}
+
+ITERATION_FIELDS = ['id_title', 'id_duration', 'id_user_story']
+
 class TestProjectVals(object):
     vals = [
         'test project1',
@@ -92,7 +99,23 @@ class BaseTest(StaticLiveServerTestCase):
         base_project = BaseProjectModel()
         return self.browser.find_element_by_id(base_project.fields_html_ids[field])
 
+    def go_to_iterations_home(self):
+        project = self.create_new_project()
+        self.go_to_project_home(project)
+        us = self.create_new_us(project)
+        self.go_to_project_home(project)
+        self.browser.implicitly_wait(5)
+        self.browser.find_element_by_link_text('Iterations').click()
+        return us
+
 
     def go_to_project_home(self, project):
         self.browser.get(
             '%s/projects/%s/' % (self.live_server_url, project[PROJECT_ID]))
+
+    def create_new_iteration(self, vals):
+        assert 'id_user_story' in vals.keys()
+        for field in ITERATION_FIELDS:
+            val = vals.get(field) or ITERATION_TEST_VALS.get(field)
+            self.browser.find_element_by_id(field).send_keys(val)
+        self.browser.find_element_by_id('id_submit').send_keys(Keys.ENTER)
