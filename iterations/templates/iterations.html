@@ -3,7 +3,7 @@
 {% block header_text %}{{title}}{% endblock %}
 {% block content %}
 
-<form method="POST" >
+<form method="POST" action="{% url 'new_iteration' project_id %}">{% csrf_token %}
     <fieldset class="form-group">
         <label for="title">Title</label>
        {{ form.title }}
@@ -40,5 +40,10 @@
 
 </form>
 
+<table class="table table-striped" id="id_list_iterations">
+    {% for iteration in iterations %}
+    <tr><td><a href="/projects/{{project.title}}/" >{{iteration.title}}</a></td></tr>
+    {% endfor %}
+</table>
 
 {% endblock %}

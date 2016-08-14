@@ -11,10 +11,9 @@ class UserStoryChoiceField(forms.ModelChoiceField):
     def label_from_instance(self, obj):
         return "%s" % obj.title 
 
-class IterationForm(forms.Form):
+class IterationForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
-        #import pdb; pdb.set_trace()
         projectid = kwargs.pop('projectid', None)
         super(IterationForm, self).__init__(*args, **kwargs)
 
@@ -22,9 +21,10 @@ class IterationForm(forms.Form):
             project = Project(id=projectid)
             self.fields['user_story'].queryset = UserStory.objects.filter(project=project)
 
-    #lass Meta:
-        #fields = ('title', 'duration')
-        #model = Iteration
+    class Meta:
+        model = Iteration
+        fields = ('title', 'duration', 'user_story')
+
     title = forms.CharField(
         label='Title',
         widget=forms.fields.TextInput(
@@ -44,3 +44,7 @@ class IterationForm(forms.Form):
             attrs={
                 'class': 'form-control' 
             }))
+
+    def save(self, project):
+        self.instance.project = project
+        return super().save()

@@ -29,6 +29,7 @@ urlpatterns = [
         r'^projects/(.+)/user_stories/',
         us_views.show_us_index,
         name='us_index'),
+    url(r'^projects/(.+)/iterations/new/', iterations_views.create_new, name='new_iteration'),
     url(r'^projects/(.+)/iterations/', iterations_views.show_index, name='show_iteration_index'),
     url(r'^projects/(.+)/developers/', show_index, name='show_users_index'),
     url(r'^projects/new/', views.new_project, name='new_project'),

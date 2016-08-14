@@ -66,6 +66,7 @@ class UserStoriesTest(BaseTest):
            #prefix = {'id_title': vals[0]}
         self.browser.implicitly_wait(10)
         us = self.create_new_us(project)
+        self.browser.get(url)
         table = self.browser.find_element_by_id('id_list_user_stories')
         rows = table.find_elements_by_tag_name('tr')
         us_title = us['title']
