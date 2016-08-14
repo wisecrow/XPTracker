@@ -1,5 +1,7 @@
 from project.models import Project
 
+from user_stories.models import UserStory
+
 from django.test import TestCase
 
 from django.http import HttpRequest
@@ -10,6 +12,12 @@ PROJECT_TEST_VALS = {
     'release_date': '2016-10-01',
     'identifier': 'my-new-procect1'
 }
+
+UserStory_VALS = {
+    'title': 'Test title',
+    'estimate_time': 3
+}
+
 
 class BaseTest(TestCase):
     project_fields = [
@@ -56,6 +64,26 @@ class BaseTest(TestCase):
             identifier=PROJECT_TEST_VALS.get('identifier'))
         project.save()
         return project
+
+    def create_new_us(self, project):
+        us = UserStory(
+            title=UserStory_VALS['title'],
+            estimate_time=UserStory_VALS['estimate_time'],
+            project=project)
+        us.save()
+        return us
+
+    def go_to_project_home(self, project):
+        url = '/projects/%s/' % project.identifier
+        return self.client.get(url)
+
+    def go_to_us_home(self, project):
+        url = '/projects/%s/user_stories/' % project.identifier
+        return self.client.get(url)
+
+    def go_to_iteration_home(self, project):
+        url = '/projects/%s/iterations/' % project.identifier
+        return self.client.get(url)
 
 # class ProjectHomePageTest(BaseTest):
 

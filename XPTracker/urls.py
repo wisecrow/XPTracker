@@ -19,6 +19,7 @@ from project import views
 
 from users.views import show_index, new_developer
 from user_stories import views as us_views
+from iterations import views as iterations_views
 
 urlpatterns = [
     # url(r'^admin/', admin.site.urls),
@@ -28,6 +29,7 @@ urlpatterns = [
         r'^projects/(.+)/user_stories/',
         us_views.show_us_index,
         name='us_index'),
+    url(r'^projects/(.+)/iterations/', iterations_views.show_index, name='show_iteration_index'),
     url(r'^projects/(.+)/developers/', show_index, name='show_users_index'),
     url(r'^projects/new/', views.new_project, name='new_project'),
     url(r'^projects/(.+)/', views.show_project, name='show_project'),

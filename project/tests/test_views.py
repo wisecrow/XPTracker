@@ -12,6 +12,7 @@ from project.views import new_project, show_projects
 
 from .base import BaseTest
 
+from XPTracker.base import PROJECT_TITLE, PROJECT_DESCR, PROJECT_RELEASE_DATE, PROJECT_ID
 
 class ProjectViewsTest(BaseTest):
 
@@ -27,32 +28,27 @@ class ProjectViewsTest(BaseTest):
         self.assertContains(response, 'Projects')
 
     def test_new_project_redirects_to_project_home(self):
-        data = BaseTest.projects_fields_vals[0]
-        response = new_project(self.get_new_projects_request(data))
+        data={'title':'Title23', 'description':'Desc dfdfd', 'release_date': '2018-02-01', 'identifier': 'ooo'}
+        response = self.client.post('/projects/new/', data=data)
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response['location'], '/projects/%s/' % data[3])
+        self.assertEqual(response['location'], '/projects/%s/' % data['identifier'])
 
     def test_can_retrieve_project_by_identifier(self):
-        data = BaseTest.projects_fields_vals[0]
-        new_project(self.get_new_projects_request(data))
-        p1 = Project.objects.filter(identifier=data[3])
-        self.assertEqual(p1[0].title, data[0])
+        project = self.create_new_project()
+        projects = Project.objects.filter(identifier=project.identifier)
+        self.assertEqual(projects[0].title, project.title)
 
     def test_can_get_html_after_project_creation(self):
-        data = BaseTest.projects_fields_vals[0]
-        new_project(self.get_new_projects_request(data))
-        response = self.client.get('/projects/%s/' % data[3])
+        project = self.create_new_project()
+        response = self.go_to_project_home(project)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'project.html')
-        self.assertContains(response, data[0])
+        self.assertContains(response, project.title)
 
     def test_index_page_has_index_of_projects(self):
-        for data in BaseTest.projects_fields_vals:
-            new_project(self.get_new_projects_request(data))
-            response = self.client.get('/projects/')
-
-        for data in BaseTest.projects_fields_vals:
-            self.assertContains(response, data[0])
+        project = self.create_new_project()
+        response = self.go_to_project_home(project)
+        self.assertContains(response, project.title)
 
     def test_project_home_page_uses_form(self):
         response = self.client.get('/projects/')

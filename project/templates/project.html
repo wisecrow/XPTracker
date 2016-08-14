@@ -4,6 +4,9 @@
 {% block content %}
     <a href="/projects/{{project.identifier}}/user_stories/">User stories</a>
     <a href="/projects/{{project.identifier}}/developers/">Developers</a>
+    {% if user_stories %}
+         <a href="/projects/{{project.identifier}}/iterations/">Iterations</a>
+    {% endif %}
     <h1 id="id_title">{{project.title}}</h1>
     <h2 id="id_description">{{project.description}}</h2>
     <h2 id="id_release_date">{{project.release_date|date:"Y-m-d"}}</h2>

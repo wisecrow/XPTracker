@@ -12,26 +12,26 @@ class IndexTest(BaseTest):
 
     def test_us_index_resolves_correctly(self):
         project = self.create_new_project()
-        response = self.client.get('/projects/%s/user_stories/' % project.identifier)
+        response = self.go_to_us_home(project)
         self.assertEqual(response.status_code, 200)
 
     def test_index_uses_home_template(self):
         project = self.create_new_project()
-        response = self.client.get('/projects/%s/user_stories/' % project.identifier)
+        response = self.go_to_us_home(project)
         self.assertTemplateUsed(response, 'us_home.html')
 
 class CreatNewTest(BaseTest):
 
     def test_new_us_resolves_correctly(self):
         project = self.create_new_project()
-        response = self.client.get('/projects/%s/user_stories/' % project.identifier)
+        response = self.go_to_us_home(project)
         request = get_new_us_request()
         response = new_us(request, project.identifier)
         self.assertEqual(response.status_code, 302) 
 
     def test_redirects_after_us_post(self):
         project = self.create_new_project()
-        response = self.client.get('/projects/%s/user_stories/' % project.identifier)
+        response = self.go_to_us_home(project)
         request = get_new_us_request()
         response = new_us(request, project.identifier)
         self.assertEqual(response.status_code, 302)
@@ -39,7 +39,7 @@ class CreatNewTest(BaseTest):
 
     def test_template_uses_form(self):
         project = self.create_new_project()
-        response = self.client.get('/projects/%s/user_stories/' % project.identifier)
+        response = self.go_to_us_home(project)
         self.assertIsInstance(response.context['form'], UserStoryForm)
 
  #  def test_us_shows

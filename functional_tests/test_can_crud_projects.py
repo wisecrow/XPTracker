@@ -73,8 +73,7 @@ class FirstTimeHomePageVisitTest(BaseTest):
         title = project[PROJECT_TITLE]
         descr = project[PROJECT_DESCR]
         release_date = project[PROJECT_RELEASE_DATE]
-        self.browser.get(
-            '%s/projects/%s/' % (self.live_server_url, pid))
+        self.go_to_project_home(project)
         self.assertRegex(
             self.browser.current_url, '/projects/%s/$' % pid)
 
@@ -103,11 +102,9 @@ class FirstTimeHomePageVisitTest(BaseTest):
         project = self.create_new_project()
         title = project[PROJECT_TITLE]
         self.browser.get(self.live_server_url)
-        import time 
-        time.sleep(10)
         alink = self.browser.find_element_by_link_text(title)
         alink.click()
-        self.browser.implicitly_wait(10)
+        self.browser.implicitly_wait(5)
         heading = self.find_element_by_field_id(PROJECT_TITLE).text
         self.assertEqual(title, heading)
 
@@ -118,7 +115,7 @@ class ProjecValidationTest(BaseTest):
         base_project = BaseProjectModel()
         fields = base_project.fields_html_ids
         self.browser.get(self.live_server_url)
-        self.browser.implicitly_wait(10)
+        self.browser.implicitly_wait(5)
         self.browser.find_element_by_id(fields[PROJECT_TITLE]).send_keys('\n')
         error = self.browser.find_elements_by_class_name('has-error')[0]
         self.assertEqual(error.text, ERROR_MESSAGES[PROJECT_TITLE]['required'])

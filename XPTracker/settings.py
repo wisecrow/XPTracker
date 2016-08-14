@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'user_stories',
     'XPTracker',
     'users',
+    'iterations',
 ]
 
 MIDDLEWARE_CLASSES = [

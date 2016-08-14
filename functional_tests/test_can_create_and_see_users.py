@@ -7,7 +7,7 @@ class ProjectPageTest(BaseTest):
 
     def test_developers_index_url_is_correct(self):
         project = self.create_new_project()
-
+        self.go_to_project_home(project)
         self.browser.get(self.live_server_url)
         title = project[PROJECT_TITLE]
         self.browser.find_element_by_link_text(title).click()

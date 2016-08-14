@@ -7,10 +7,14 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 
 from selenium.webdriver.common.keys import Keys
 
-from XPTracker.base import BaseProjectModel, PROJECT_TITLE, PROJECT_DESCR, PROJECT_RELEASE_DATE, PROJECT_ID
+from XPTracker.base import BaseProjectModel, PROJECT_TITLE, PROJECT_DESCR, PROJECT_RELEASE_DATE, PROJECT_ID, US_FIELDS_IDS
+
+from selenium.webdriver.support.ui import WebDriverWait
+
 # from project.views import show_project
 # from django.http import HttpRequest
 
+US_VALS = {'title': 'Test US title', 'estimate_time': 6}
 
 class TestProjectVals(object):
     vals = [
@@ -50,6 +54,9 @@ class BaseTest(StaticLiveServerTestCase):
             prf = prefix.get(field, '')
             if prf:
                 val = '%s %s' % (val, prf)
+
+            self.wait_for_element_with_id(fields[field])
+
             self.browser.find_element_by_id(fields[field]).send_keys(val)
         self.browser.find_element_by_id('id_submit').send_keys(Keys.ENTER)
         return vals
@@ -64,6 +71,28 @@ class BaseTest(StaticLiveServerTestCase):
             data
         )
 
+    def create_new_us(self, project, data={}):
+        return self.create_new_model(
+            US_FIELDS_IDS,
+            US_VALS,
+            self.get_project_us_url(project),
+            data
+        )
+
+    def wait_for_element_with_id(self, element_id):
+        WebDriverWait(self.browser, timeout=30).until(
+            lambda b: b.find_element_by_id(element_id)
+        )
+
+
+    def get_project_us_url(self, project):
+        return '%s/projects/%s/user_stories/' % (self.live_server_url, project[PROJECT_ID])
+
     def find_element_by_field_id(self, field):
         base_project = BaseProjectModel()
         return self.browser.find_element_by_id(base_project.fields_html_ids[field])
+
+
+    def go_to_project_home(self, project):
+        self.browser.get(
+            '%s/projects/%s/' % (self.live_server_url, project[PROJECT_ID]))

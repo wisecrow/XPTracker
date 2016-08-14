@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title_text %}{{title}}{% endblock %}
+{% block header_text %}{{title}}{% endblock %}
+{% block content %}
+
+<form method="POST" >
+    <fieldset class="form-group">
+        <label for="title">Title</label>
+       {{ form.title }}
+        {% if form.errors %}
+        <div class="form-group has-error">
+            <div class="help-block">{{ form.title.errors }}</div>
+         </div>
+        {% endif %}
+        </fieldset>
+
+    <fieldset class="form-group">
+         <label for="duration">Duration (weeks)</label>
+        {{ form.duration }}
+        {% if form.errors %}
+        <div class="form-group has-error">
+            <div class="help-block">{{ form.duration.errors }}</div>
+         </div>
+        {% endif %}
+    </fieldset>
+
+
+     <fieldset class="form-group">
+         <label for="user_story">User story</label>
+        {{ form.user_story }}
+        {% if form.errors %}
+        <div class="form-group has-error">
+            <div class="help-block">{{ form.user_story.errors }}</div>
+         </div>
+        {% endif %}
+    </fieldset>
+
+
+     <button type="submit" name="submit" id="id_submit" class="btn btn-primary">Submit</button>
+
+</form>
+
+
+{% endblock %}

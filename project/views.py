@@ -12,6 +12,8 @@ from project.models import Project
 
 from project.forms import ProjectForm
 
+from user_stories.models import UserStory
+
 
 def show_index(request):
     return redirect('/projects/')
@@ -35,10 +37,13 @@ def show_projects(request):
 
 
 def show_project(request, id):
-    project = Project.objects.filter(identifier=id)
-    if not project:
+    projects = Project.objects.filter(identifier=id)
+    user_stories = UserStory.objects.filter(project=projects[0])
+    if not projects:
         return HttpResponseNotFound('Page not found!')
-    return render(request, 'project.html', {'project': project[0]})
+    return render(request, 'project.html', {
+        'project': projects[0],
+        'user_stories': user_stories})
 
 
 # def get_url_string(title):

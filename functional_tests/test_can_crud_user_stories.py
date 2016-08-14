@@ -1,7 +1,6 @@
 from .base import BaseTest
 from XPTracker.base import PROJECT_TITLE, PROJECT_DESCR, PROJECT_RELEASE_DATE, PROJECT_ID, US_FIELDS_IDS
 
-US_VALS = {'title': 'Test US title', 'estimate_time': 6}
 
 class UserStoriesTest(BaseTest):
 
@@ -12,7 +11,7 @@ class UserStoriesTest(BaseTest):
                 '%s/projects/%s/' % (self.live_server_url, project[PROJECT_ID])
         )
 
-        self.browser.implicitly_wait(10)
+        self.browser.implicitly_wait(5)
         self.browser.find_element_by_link_text(
             'User stories').click()
         self.assertRegex(
@@ -25,7 +24,7 @@ class UserStoriesTest(BaseTest):
     def test_can_see_us_form(self):
         project = self. create_new_project()
   
-        self.browser.implicitly_wait(10)
+        self.browser.implicitly_wait(5)
         self.browser.get(
             '%s/projects/%s/' % (self.live_server_url, project[PROJECT_ID])
         )
@@ -66,14 +65,10 @@ class UserStoriesTest(BaseTest):
     
            #prefix = {'id_title': vals[0]}
         self.browser.implicitly_wait(10)
-        self.create_new_model(
-                US_FIELDS_IDS,
-                US_VALS,
-                url
-               )
+        us = self.create_new_us(project)
         table = self.browser.find_element_by_id('id_list_user_stories')
         rows = table.find_elements_by_tag_name('tr')
-        us_title = US_VALS['title']
+        us_title = us['title']
         self.assertIn(us_title, [row.text for row in rows])
 
  
