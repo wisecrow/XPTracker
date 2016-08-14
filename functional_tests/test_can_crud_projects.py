@@ -91,6 +91,7 @@ class FirstTimeHomePageVisitTest(BaseTest):
     def test_projects_index_page_has_project_rows(self):
         project = self.create_new_project()
         self.browser.get(self.live_server_url)
+        self.browser.implicitly_wait(5)
         table = self.browser.find_element_by_id('id_list_projects')
         rows = table.find_elements_by_tag_name('tr')
         title = project[PROJECT_TITLE]
@@ -102,6 +103,8 @@ class FirstTimeHomePageVisitTest(BaseTest):
         project = self.create_new_project()
         title = project[PROJECT_TITLE]
         self.browser.get(self.live_server_url)
+        import time
+        time.sleep(10)
         alink = self.browser.find_element_by_link_text(title)
         alink.click()
         self.browser.implicitly_wait(5)
@@ -115,13 +118,14 @@ class ProjecValidationTest(BaseTest):
         base_project = BaseProjectModel()
         fields = base_project.fields_html_ids
         self.browser.get(self.live_server_url)
-        self.browser.implicitly_wait(5)
         self.browser.find_element_by_id(fields[PROJECT_TITLE]).send_keys('\n')
         error = self.browser.find_elements_by_class_name('has-error')[0]
         self.assertEqual(error.text, ERROR_MESSAGES[PROJECT_TITLE]['required'])
 
     def test_can_not_add_past_release_date(self):
         project = self.create_new_project({'release_date': '1900-01-01'})
+        self.browser.implicitly_wait(5)
         errors = self.browser.find_elements_by_class_name('has-error')
         # errors  has index same as order of fields. release_date id third in the
+        #import pdb; pdb.set_trace()
         self.assertEqual(errors[2].text, ERROR_MESSAGES[PROJECT_RELEASE_DATE]['only_future'])
