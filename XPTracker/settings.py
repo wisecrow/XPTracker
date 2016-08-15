@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'XPTracker',
     'users',
     'iterations',
+    'tasks',
 ]
 
 MIDDLEWARE_CLASSES = [

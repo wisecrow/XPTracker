@@ -6,6 +6,8 @@ from django.test import TestCase
 
 from django.http import HttpRequest
 
+from iterations.models import Iteration
+
 
 PROJECT_TEST_VALS = {
     'title': 'My new project1',
@@ -80,6 +82,22 @@ class BaseTest(TestCase):
 
     def go_to_us_home(self, project):
         url = '/projects/%s/user_stories/' % project.identifier
+        return self.client.get(url)
+
+    def create_new_iteration(self):
+        project = self.create_new_project()
+        us = self.create_new_us(project)
+        iteration = Iteration(
+            title='Testaddfd',
+            duration=3,
+            user_story=us,
+            project=project
+        )
+        iteration.save()
+        return project, iteration
+
+    def go_tasks_home(self, project):
+        url = '/projects/%s/tasks/' % project.identifier
         return self.client.get(url)
 
     def go_to_iteration_home(self, project):

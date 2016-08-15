@@ -37,6 +37,15 @@ class TaskCreateTest(BaseTest):
         self.go_to_tasks_page()
         self.assertEqual(self.browser.title, 'Tasks')
 
+    def test_tasks_show_html_form(self):
+        self.go_to_tasks_page()
+        title = self.browser.find_element_by_id('id_title')
+        description = self.browser.find_element_by_id('id_description')
+        estimate_time = self.browser.find_element_by_id('estimate_time')
+        developer = self.browser.find_element_by_id('id_developoer')
+        iteration = self.browser.find_element_by_id('id_iteration')
+
+
 
 
 

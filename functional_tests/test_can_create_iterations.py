@@ -30,8 +30,7 @@ class IterationCreateTest(BaseTest):
         user_story_input = self.browser.find_element_by_id('id_user_story')
 
     def test_can_create_and_see_iteration(self):
-        project = self.create_new_project()
-        us = self.go_to_iterations_home(project)
+        us = self.go_to_iterations_home()
         self.create_new_iteration({'id_user_story': us['title']})
         table = self.browser.find_element_by_id('id_list_iterations')
         rows = table.find_elements_by_tag_name('tr')
